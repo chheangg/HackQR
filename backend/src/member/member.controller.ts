@@ -9,7 +9,9 @@ export class MemberController {
   ) {}
 
   @Get()
-  findAllMembers(): Promise<MemberDocument[]> {
-    return this.memberService.findAll();
+  async findAllMembers(): Promise<MemberDocument[]> {
+    return this.memberService.convertToMemberDtos(
+      await this.memberService.findAll()
+    );
   }
 }
