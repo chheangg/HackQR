@@ -11,37 +11,78 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as MembersRouteImport } from './routes/members/route'
+import { Route as AttendancesRouteImport } from './routes/attendances/route'
 
 // Create/Update Routes
+
+const MembersRouteRoute = MembersRouteImport.update({
+  path: '/members',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AttendancesRouteRoute = AttendancesRouteImport.update({
+  path: '/attendances',
+  getParentRoute: () => rootRoute,
+} as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {}
+  interface FileRoutesByPath {
+    '/attendances': {
+      id: '/attendances'
+      path: '/attendances'
+      fullPath: '/attendances'
+      preLoaderRoute: typeof AttendancesRouteImport
+      parentRoute: typeof rootRoute
+    }
+    '/members': {
+      id: '/members'
+      path: '/members'
+      fullPath: '/members'
+      preLoaderRoute: typeof MembersRouteImport
+      parentRoute: typeof rootRoute
+    }
+  }
 }
 
 // Create and export the route tree
 
-export interface FileRoutesByFullPath {}
+export interface FileRoutesByFullPath {
+  '/attendances': typeof AttendancesRouteRoute
+  '/members': typeof MembersRouteRoute
+}
 
-export interface FileRoutesByTo {}
+export interface FileRoutesByTo {
+  '/attendances': typeof AttendancesRouteRoute
+  '/members': typeof MembersRouteRoute
+}
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
+  '/attendances': typeof AttendancesRouteRoute
+  '/members': typeof MembersRouteRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: never
+  fullPaths: '/attendances' | '/members'
   fileRoutesByTo: FileRoutesByTo
-  to: never
-  id: '__root__'
+  to: '/attendances' | '/members'
+  id: '__root__' | '/attendances' | '/members'
   fileRoutesById: FileRoutesById
 }
 
-export interface RootRouteChildren {}
+export interface RootRouteChildren {
+  AttendancesRouteRoute: typeof AttendancesRouteRoute
+  MembersRouteRoute: typeof MembersRouteRoute
+}
 
-const rootRouteChildren: RootRouteChildren = {}
+const rootRouteChildren: RootRouteChildren = {
+  AttendancesRouteRoute: AttendancesRouteRoute,
+  MembersRouteRoute: MembersRouteRoute,
+}
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
@@ -54,7 +95,16 @@ export const routeTree = rootRoute
   "routes": {
     "__root__": {
       "filePath": "__root.tsx",
-      "children": []
+      "children": [
+        "/attendances",
+        "/members"
+      ]
+    },
+    "/attendances": {
+      "filePath": "attendances/route.tsx"
+    },
+    "/members": {
+      "filePath": "members/route.tsx"
     }
   }
 }
