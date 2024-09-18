@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { AttendanceDto } from "./attendance.dto";
 import { AttendanceService } from "./attendance.service";
 
@@ -31,6 +31,15 @@ export class AttendanceController {
   ): Promise<AttendanceDto> {
     return this.attendanceService.convertToAttendanceDto(
       await this.attendanceService.update(id, attendanceDto)
+    );
+  }
+
+  @Delete(":id")
+  async deleteAttendance(
+    @Param('id') id: string,
+  ): Promise<AttendanceDto> {
+    return this.attendanceService.convertToAttendanceDto(
+      await this.attendanceService.delete(id)
     );
   }
 }

@@ -61,6 +61,16 @@ export class AttendanceService {
     return attendanceDoc.data();
   }
 
+  async delete(id: string): Promise<AttendanceDocument> {
+    const docRef = this.attendancesCollection.doc(id);
+
+    const attendanceDoc = await docRef.get();
+
+    await docRef.delete();
+
+    return attendanceDoc.data();
+  }
+
   convertToAttendanceDto(attendance: AttendanceDocument): AttendanceDto {
     return {
       date: attendance.date,
