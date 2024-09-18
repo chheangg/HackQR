@@ -9,6 +9,8 @@ export class FirestoreExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     let status: HttpStatus;
+
+    console.log(exception);
     
     switch (Number(exception.code)) {
       case 5:
