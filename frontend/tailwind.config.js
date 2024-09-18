@@ -1,9 +1,9 @@
 const { fontFamily } = require("tailwindcss/defaultTheme")
- 
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
-  content: ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}"],
+  content: ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}", "./src/**/*.{js,ts,jsx,tsx}",],
   theme: {
     container: {
       center: true,
@@ -55,6 +55,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
+        'body': ['"Roboto Mono"', 'monospace'],
       },
       keyframes: {
         "accordion-down": {
