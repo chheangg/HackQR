@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
 import { AttendanceDto } from "./attendance.dto";
 import { AttendanceService } from "./attendance.service";
 
@@ -22,5 +22,15 @@ export class AttendanceController {
     return this.attendanceService.convertToAttendanceDto(
       await this.attendanceService.create(attendanceDto)
     )
+  }
+
+  @Put(":id")
+  async updateAttendance(
+    @Param('id') id: string,
+    @Body() attendanceDto: AttendanceDto
+  ): Promise<AttendanceDto> {
+    return this.attendanceService.convertToAttendanceDto(
+      await this.attendanceService.update(id, attendanceDto)
+    );
   }
 }

@@ -42,6 +42,25 @@ export class AttendanceService {
     return attendanceDoc.data();
   }
 
+  async update(id: string, attendanceDto: AttendanceDto): Promise<AttendanceDocument> {
+    const docRef = this.attendancesCollection.doc(id);
+
+    await docRef.update({
+      timeStart: Timestamp.fromDate(
+        new Date(attendanceDto.timeStart)
+      ),
+      timeEnd: Timestamp.fromDate(
+        new Date(attendanceDto.timeEnd)
+      ),
+      timeLate: Timestamp.fromDate(
+        new Date(attendanceDto.timeLate)
+      )
+    })
+
+    const attendanceDoc = await docRef.get();
+    return attendanceDoc.data();
+  }
+
   convertToAttendanceDto(attendance: AttendanceDocument): AttendanceDto {
     return {
       date: attendance.date,
