@@ -1,16 +1,10 @@
-import { Type } from "class-transformer";
-import { IsEnum, IsNotEmpty, IsString } from "class-validator";
-import { MemberStatus } from "./member-status.enum";
+import { IsNotEmpty, IsString } from "class-validator";
 
 export class MemberDto {
   @IsString()
-  id: String;
+  id: string;
 
   @IsString()
   @IsNotEmpty()
-  name: String;
-
-  @IsEnum(MemberStatus)
-  @IsNotEmpty()
-  status: MemberStatus;
+  name: string;
 }

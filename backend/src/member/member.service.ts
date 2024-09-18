@@ -2,6 +2,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { MemberDocument } from "./member.document";
 import { CollectionReference } from "@google-cloud/firestore";
 import { MemberDto } from "./member.dto";
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class MemberService {
@@ -15,19 +16,34 @@ export class MemberService {
     const members: MemberDocument[] = [];
 
     snapshot.forEach(doc => {
-      const memberDocument = doc.data()
-      memberDocument.id = doc.id;
-      members.push(memberDocument)
+      const member = doc.data()
+      member.id = doc.id;
+      members.push(member)
     });
 
     return members; 
+  }
+
+  async create(memberDto: MemberDto): Promise<MemberDocument> {
+    const memberId = uuidv4();
+
+    const docRef = this.membersCollection.doc(memberId);
+    await docRef.set({
+      name: memberDto.name,
+    });
+
+    const memberDoc = await docRef.get();
+
+    const member = memberDoc.data();
+    member.id = memberDoc.id;
+    
+    return member;
   }
 
   convertToMemberDto(member: MemberDocument): MemberDto {
     return {
       id: member.id,
       name: member.name,
-      status: member.status,
     }
   }
 

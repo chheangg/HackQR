@@ -1,7 +1,8 @@
+import { MemberStatus } from "./member-status.enum";
+
 export class MemberDocument {
   static collectionName = 'members';
   
-  id: String;
-  name: String;
-  status: MemberStatus;
+  id?: string;
+  name: string;
 }
