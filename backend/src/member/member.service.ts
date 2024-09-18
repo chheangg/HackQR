@@ -56,6 +56,19 @@ export class MemberService {
     return member;
   }
 
+  async delete(id: string): Promise<MemberDocument> {
+    const docRef = this.membersCollection.doc(id);
+
+    const memberDoc = await docRef.get();
+
+    const member = memberDoc.data();
+    member.id = memberDoc.id;
+
+    await docRef.delete();
+
+    return member;
+  }
+
   convertToMemberDto(member: MemberDocument): MemberDto {
     return {
       id: member.id,

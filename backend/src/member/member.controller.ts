@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { MemberDocument } from "./member.document";
 import { MemberService } from "./member.service";
 import { MemberDto } from "./member.dto";
@@ -32,6 +32,15 @@ export class MemberController {
   ) {
     return this.memberService.convertToMemberDto(
       await this.memberService.update(id, memberDto)
+    );
+  }
+
+  @Delete(":id")
+  async deleteMember(
+    @Param('id') id: string
+  ) {
+    return this.memberService.convertToMemberDto(
+      await this.memberService.delete(id)
     );
   }
 }
