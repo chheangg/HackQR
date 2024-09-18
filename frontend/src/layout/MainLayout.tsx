@@ -40,7 +40,7 @@ export function MainLayout({ children }: MainLayoutProps) {
             Member
           </AsideItem>
         </Aside>
-        <main className="col-start-2 col-end-auto">
+        <main className="col-start-2 -col-end-1">
           {children}
         </main>
       </div>
