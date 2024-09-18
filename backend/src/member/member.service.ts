@@ -1,15 +1,18 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { MemberDocument } from "./member.document";
-import { CollectionReference } from "@google-cloud/firestore";
+import { CollectionReference, Timestamp } from "@google-cloud/firestore";
 import { MemberDto } from "./member.dto";
 import { v4 as uuidv4 } from 'uuid';
-import { FirebaseFirestoreError } from "firebase-admin/lib/utils/error";
+import { MemberAttendanceDto } from "./member-attendance.dto";
+import { AttendanceService } from "src/attendance/attendance.service";
+import * as dayjs from 'dayjs'
 
 @Injectable()
 export class MemberService {
   constructor(
     @Inject(MemberDocument.collectionName)
     private membersCollection: CollectionReference<MemberDocument>,
+    private attendanceService: AttendanceService,
   ) {}
 
   async findAll(): Promise<MemberDocument[]> {
@@ -56,6 +59,30 @@ export class MemberService {
     return member;
   }
 
+  async moveStatus(id: string, memberAttendanceDto: MemberAttendanceDto): Promise<MemberDocument> {
+    const attendance = await this.attendanceService.findDateByDateOrThrowError(memberAttendanceDto.date);
+
+    const docRef = this.membersCollection.doc(id);
+
+    await docRef.update({
+      attendances: {
+        [attendance.date]: {
+          checkIn: Timestamp.fromDate(dayjs(Date.now()).toDate()),
+          status: memberAttendanceDto.status
+        }
+      }
+    })
+
+    console.log(memberAttendanceDto.status)
+
+    const memberDoc = await docRef.get();
+
+    const member = memberDoc.data();
+    member.id = memberDoc.id;
+    
+    return member;
+  }
+
   async delete(id: string): Promise<MemberDocument> {
     const docRef = this.membersCollection.doc(id);
 
@@ -70,10 +97,20 @@ export class MemberService {
   }
 
   convertToMemberDto(member: MemberDocument): MemberDto {
-    return {
+    const memberDto = {
       id: member.id,
       name: member.name,
-    }
+      attendances: {}
+    };
+
+    Object.keys(member.attendances || {}).forEach((key) => {
+      memberDto.attendances[key] = {
+        checkIn: member.attendances[key].checkIn.toDate().toISOString(),
+        status: member.attendances[key].status
+      }
+    })
+
+    return memberDto;
   }
 
   convertToMemberDtos(members: MemberDocument[]): MemberDto[] {

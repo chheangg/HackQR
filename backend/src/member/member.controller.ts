@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common"
 import { MemberDocument } from "./member.document";
 import { MemberService } from "./member.service";
 import { MemberDto } from "./member.dto";
+import { MemberAttendanceDto } from "./member-attendance.dto";
 
 @Controller('members')
 export class MemberController {
@@ -10,7 +11,7 @@ export class MemberController {
   ) {}
 
   @Get()
-  async findAllMembers(): Promise<MemberDocument[]> {
+  async findAllMembers(): Promise<MemberDto[]> {
     return this.memberService.convertToMemberDtos(
       await this.memberService.findAll()
     );
@@ -32,6 +33,16 @@ export class MemberController {
   ) {
     return this.memberService.convertToMemberDto(
       await this.memberService.update(id, memberDto)
+    );
+  }
+
+  @Put(":id/move-status")
+  async moveMemberStatus(
+    @Param('id') id: string,
+    @Body() MemberAttendanceDto
+  ): Promise<MemberDto> {
+    return this.memberService.convertToMemberDto(
+      await this.memberService.moveStatus(id, MemberAttendanceDto)
     );
   }
 

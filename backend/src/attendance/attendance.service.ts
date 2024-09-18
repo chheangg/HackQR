@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { AttendanceDocument } from "./attendance.document";
 import { CollectionReference, Timestamp } from "@google-cloud/firestore";
 import { AttendanceDto } from "./attendance.dto";
@@ -20,6 +20,18 @@ export class AttendanceService {
     })
 
     return attendances;
+  }
+
+  async findDateByDateOrThrowError(date: string): Promise<AttendanceDocument> {
+    const docRef = this.attendancesCollection.doc(date);
+    
+    const attendanceDoc = await docRef.get();
+
+    if (!attendanceDoc.data()) {
+      throw new NotFoundException(AttendanceDocument);
+    }
+
+    return attendanceDoc.data();
   }
 
   async create(attendanceDto: AttendanceDto): Promise<AttendanceDocument> {
