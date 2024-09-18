@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
 import { MemberDocument } from "./member.document";
 import { MemberService } from "./member.service";
 import { MemberDto } from "./member.dto";
@@ -22,6 +22,16 @@ export class MemberController {
   ): Promise<MemberDto> {
     return this.memberService.convertToMemberDto(
       await this.memberService.create(memberDto)
+    );
+  }
+
+  @Put(":id")
+  async updateMember(
+    @Param('id') id: string,
+    @Body() memberDto: MemberDto
+  ) {
+    return this.memberService.convertToMemberDto(
+      await this.memberService.update(id, memberDto)
     );
   }
 }

@@ -3,6 +3,7 @@ import { MemberDocument } from "./member.document";
 import { CollectionReference } from "@google-cloud/firestore";
 import { MemberDto } from "./member.dto";
 import { v4 as uuidv4 } from 'uuid';
+import { FirebaseFirestoreError } from "firebase-admin/lib/utils/error";
 
 @Injectable()
 export class MemberService {
@@ -31,6 +32,21 @@ export class MemberService {
     await docRef.set({
       name: memberDto.name,
     });
+
+    const memberDoc = await docRef.get();
+
+    const member = memberDoc.data();
+    member.id = memberDoc.id;
+    
+    return member;
+  }
+
+  async update(id: string, memberDto: MemberDto): Promise<MemberDocument> {
+    const docRef = this.membersCollection.doc(id);
+
+    await docRef.update({
+      name: memberDto.name,
+    })
 
     const memberDoc = await docRef.get();
 
