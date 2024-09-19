@@ -1,23 +1,34 @@
+import { useLocation, useNavigate } from "@tanstack/react-router";
 import { Button } from "../../../components/ui/button";
 
-interface AsideItemProps {
-  children: React.ReactNode;
-  isSelected?: boolean;
-  onClick?: () => void;
-}
+export interface AsideItemProps {
 
-export function AsideItem({ children, isSelected, onClick }: AsideItemProps) {
+  to: string;
+  content: string;
+  childRoutes?: RegExp[];
+}
+export function AsideItem({ to, content, childRoutes }: AsideItemProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const isSelected = location.pathname === to;
+  let orHasChild = false;
+
+  if (childRoutes) {
+    orHasChild = !!childRoutes.find((regex) => regex.test(location.pathname));
+  }
+  
   return (
     <Button 
-      onClick={onClick}
+      onClick={() => navigate({ to })}
       variant="ghost" 
       className={
         "justify-start hover:bg-neutral-200 font-normal text-lg" 
         + 
-        ` ${isSelected ? 'bg-neutral-200' : ''}`
+        ` ${(isSelected || orHasChild) ? 'bg-neutral-200' : ''}`
       }
     >
-      {children}
+      {content}
     </Button>
   )
 }
