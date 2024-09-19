@@ -4,7 +4,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table"
- 
+
 import {
   Table,
   TableBody,
@@ -13,12 +13,12 @@ import {
   TableHeader,
   TableRow,
 } from './table'
- 
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }
- 
+
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -28,7 +28,7 @@ export function DataTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
   })
- 
+
   return (
     <div className="border rounded-md">
       <Table>

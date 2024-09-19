@@ -1,5 +1,5 @@
 import { DataTable } from "../../../components/ui/data-table";
-import { getAllAttendances } from "../api/attendance";
+import { getAllAttendances } from "../../../api/attendance";
 import { columns } from "./columns";
 import { useQuery } from '@tanstack/react-query'
 
