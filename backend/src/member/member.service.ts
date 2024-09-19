@@ -64,8 +64,13 @@ export class MemberService {
 
     const docRef = this.membersCollection.doc(id);
 
+    let memberDoc = await docRef.get();
+
+    let member = memberDoc.data();
+
     await docRef.update({
       attendances: {
+        ...member.attendances,
         [attendance.date]: {
           checkIn: Timestamp.fromDate(dayjs(Date.now()).toDate()),
           status: memberAttendanceDto.status
@@ -73,11 +78,9 @@ export class MemberService {
       }
     })
 
-    console.log(memberAttendanceDto.status)
+    memberDoc = await docRef.get();
 
-    const memberDoc = await docRef.get();
-
-    const member = memberDoc.data();
+    member = memberDoc.data();
     member.id = memberDoc.id;
     
     return member;
