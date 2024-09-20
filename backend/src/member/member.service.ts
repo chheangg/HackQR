@@ -7,6 +7,7 @@ import { MemberAttendanceDto } from "./member-attendance.dto";
 import { AttendanceService } from "src/attendance/attendance.service";
 import * as dayjs from 'dayjs'
 import { MemberStatus } from "./member-status.enum";
+import { MemberAttendance } from "./member-attendance";
 
 interface MemberQuery {
   date?: string;
@@ -44,8 +45,18 @@ export class MemberService {
     const memberId = uuidv4();
 
     const docRef = this.membersCollection.doc(memberId);
+    const attendances = await this.attendanceService.findAll();
+    const memberAttendanceList: MemberAttendance[] = attendances.map((a) => ({
+      checkIn: Timestamp.fromDate(new Date(Date.now())),
+      status: MemberStatus.NOT_YET_ARRIVED
+    }))
+
+    const memberAttendance: { [key: string]: MemberAttendance } = 
+      memberAttendanceList.reduce((acc,curr,i)=> (acc[attendances[i].date]=curr,acc),{})
+
     await docRef.set({
       name: memberDto.name,
+      attendances: memberAttendance,
     });
 
     const memberDoc = await docRef.get();
