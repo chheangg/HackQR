@@ -2,12 +2,17 @@ import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { AttendanceDocument } from "./attendance.document";
 import { CollectionReference, Timestamp } from "@google-cloud/firestore";
 import { AttendanceDto } from "./attendance.dto";
+import { MemberDocument } from "src/member/member.document";
+import { MemberAttendance } from "src/member/member-attendance";
+import { MemberStatus } from "src/member/member-status.enum";
 
 @Injectable()
 export class AttendanceService {
   constructor(
     @Inject(AttendanceDocument.collectionName)
     private attendancesCollection: CollectionReference<AttendanceDocument>,
+    @Inject(MemberDocument.collectionName)
+    private membersCollection: CollectionReference<MemberDocument>,
   ) {}
 
   async findAll(): Promise<AttendanceDocument[]> {
@@ -51,7 +56,28 @@ export class AttendanceService {
     });
 
     const attendanceDoc = await docRef.get();
-    return attendanceDoc.data();
+    const attendance = attendanceDoc.data();
+
+    const allMembers = await this.membersCollection.get()
+
+    allMembers.docs.forEach(async (doc) => {
+      const memberAttendance: MemberAttendance = {
+        checkIn: Timestamp.fromDate(new Date(Date.now())),
+        status: MemberStatus.NOT_YET_ARRIVED,
+      };
+
+      const memberRef = await doc.ref.get();
+      const member = memberRef.data();
+
+      doc.ref.update({
+        attendances: {
+          ...member.attendances,
+          [attendance.date]: memberAttendance,
+        }
+      })
+    })
+
+    return attendance;
   }
 
   async update(id: string, attendanceDto: AttendanceDto): Promise<AttendanceDocument> {
