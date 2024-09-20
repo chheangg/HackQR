@@ -6,6 +6,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { MemberAttendanceDto } from "./member-attendance.dto";
 import { AttendanceService } from "src/attendance/attendance.service";
 import * as dayjs from 'dayjs'
+import { MemberStatus } from "./member-status.enum";
+
+interface MemberQuery {
+  date?: string;
+  status?: MemberStatus | '' | null;
+}
 
 @Injectable()
 export class MemberService {
@@ -15,8 +21,14 @@ export class MemberService {
     private attendanceService: AttendanceService,
   ) {}
 
-  async findAll(): Promise<MemberDocument[]> {
-    const snapshot = await this.membersCollection.get();
+  async findAll({ date, status }: MemberQuery): Promise<MemberDocument[]> {
+    let snapshot: FirebaseFirestore.QuerySnapshot<MemberDocument, FirebaseFirestore.DocumentData>;
+    if (date && status) {
+      snapshot = await this.membersCollection
+      .where('attendances.' + date + '.status', '==', status).get()
+    } else {
+      snapshot = await this.membersCollection.get();
+    }
     const members: MemberDocument[] = [];
 
     snapshot.forEach(doc => {
@@ -64,6 +76,7 @@ export class MemberService {
 
     const docRef = this.membersCollection.doc(id);
 
+    // TODO: Fix this, it's redundant
     let memberDoc = await docRef.get();
 
     let member = memberDoc.data();
@@ -103,7 +116,7 @@ export class MemberService {
     const memberDto = {
       id: member.id,
       name: member.name,
-      attendances: {}
+      attendances: {},
     };
 
     Object.keys(member.attendances || {}).forEach((key) => {

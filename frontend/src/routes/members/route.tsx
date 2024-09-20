@@ -50,7 +50,7 @@ function MemberLayoutPage() {
           <SelectContent>
             {
               data.map((a) => (
-                <SelectItem value={a.date}>{a.date}</SelectItem>
+                <SelectItem value={a.date} key={a.date}>{a.date}</SelectItem>
               ))
             }
             <SelectItem value="all">All Members</SelectItem>
@@ -58,7 +58,7 @@ function MemberLayoutPage() {
         </Select>
       </div>
       <Tabs defaultValue='not-yet-arrived' className='mt-2 w-full'>
-        <TabsList className='grid grid-cols-4 bg-neutral-200 w-full'>
+        <TabsList className='grid grid-cols-3 bg-neutral-200 w-full'>
           <TabsTrigger 
             value="not-yet-arrived" 
             onClick={() => navigate({ to: '/members' })}
@@ -73,18 +73,12 @@ function MemberLayoutPage() {
           </TabsTrigger>
           <TabsTrigger
             value="late" 
-            onClick={() => navigate({ to: '/members/late' })}
-          >
-            Late
-          </TabsTrigger>
-          <TabsTrigger
-            value="absent" 
-            onClick={() => navigate({ to: '/members/absent' })}       
+            onClick={() => navigate({ to: '/members/late' })}       
           >  
             Absent
           </TabsTrigger>
         </TabsList>
-        <div>
+        <div className='mt-4'>
           <MemberTableContext.Provider value={{ date: tableOption }}>
             <Outlet />
           </MemberTableContext.Provider>

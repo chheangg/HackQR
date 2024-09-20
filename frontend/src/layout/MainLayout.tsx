@@ -37,6 +37,7 @@ export function MainLayout({ children }: MainLayoutProps) {
             navData.map((nav) => (
               <AsideItem 
                 {...nav}
+                key={nav.content}
               />
             ))
           }

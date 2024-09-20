@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsArray, IsNotEmpty, IsString } from "class-validator";
 import { MemberAttendanceDto } from "./member-attendance.dto";
 import { Type } from "class-transformer";
 

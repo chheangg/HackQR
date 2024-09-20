@@ -6,4 +6,5 @@ export type Member = {
   attendances: {
     [key: string]: MemberAttendance;
   }
+  date?: string;
 };

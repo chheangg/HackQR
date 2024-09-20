@@ -1,4 +1,6 @@
 export enum MemberStatus {
-  PRESENT,
-  LATE,
+  NOT_YET_ARRIVED = "NOT_YET_ARRIVED",
+  PRESENT = "PRESENT",
+  LATE = "LATE",
+  ABSENT = "ABSENT",
 };

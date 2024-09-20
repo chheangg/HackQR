@@ -17,7 +17,6 @@ import { Route as MembersIndexImport } from './routes/members/index'
 import { Route as AttendancesIndexImport } from './routes/attendances/index'
 import { Route as MembersPresentImport } from './routes/members/present'
 import { Route as MembersLateImport } from './routes/members/late'
-import { Route as MembersAbsentImport } from './routes/members/absent'
 
 // Create/Update Routes
 
@@ -51,11 +50,6 @@ const MembersLateRoute = MembersLateImport.update({
   getParentRoute: () => MembersRouteRoute,
 } as any)
 
-const MembersAbsentRoute = MembersAbsentImport.update({
-  path: '/absent',
-  getParentRoute: () => MembersRouteRoute,
-} as any)
-
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -73,13 +67,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/members'
       preLoaderRoute: typeof MembersRouteImport
       parentRoute: typeof rootRoute
-    }
-    '/members/absent': {
-      id: '/members/absent'
-      path: '/absent'
-      fullPath: '/members/absent'
-      preLoaderRoute: typeof MembersAbsentImport
-      parentRoute: typeof MembersRouteImport
     }
     '/members/late': {
       id: '/members/late'
@@ -126,14 +113,12 @@ const AttendancesRouteRouteWithChildren =
   AttendancesRouteRoute._addFileChildren(AttendancesRouteRouteChildren)
 
 interface MembersRouteRouteChildren {
-  MembersAbsentRoute: typeof MembersAbsentRoute
   MembersLateRoute: typeof MembersLateRoute
   MembersPresentRoute: typeof MembersPresentRoute
   MembersIndexRoute: typeof MembersIndexRoute
 }
 
 const MembersRouteRouteChildren: MembersRouteRouteChildren = {
-  MembersAbsentRoute: MembersAbsentRoute,
   MembersLateRoute: MembersLateRoute,
   MembersPresentRoute: MembersPresentRoute,
   MembersIndexRoute: MembersIndexRoute,
@@ -146,7 +131,6 @@ const MembersRouteRouteWithChildren = MembersRouteRoute._addFileChildren(
 export interface FileRoutesByFullPath {
   '/attendances': typeof AttendancesRouteRouteWithChildren
   '/members': typeof MembersRouteRouteWithChildren
-  '/members/absent': typeof MembersAbsentRoute
   '/members/late': typeof MembersLateRoute
   '/members/present': typeof MembersPresentRoute
   '/attendances/': typeof AttendancesIndexRoute
@@ -154,7 +138,6 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
-  '/members/absent': typeof MembersAbsentRoute
   '/members/late': typeof MembersLateRoute
   '/members/present': typeof MembersPresentRoute
   '/attendances': typeof AttendancesIndexRoute
@@ -165,7 +148,6 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/attendances': typeof AttendancesRouteRouteWithChildren
   '/members': typeof MembersRouteRouteWithChildren
-  '/members/absent': typeof MembersAbsentRoute
   '/members/late': typeof MembersLateRoute
   '/members/present': typeof MembersPresentRoute
   '/attendances/': typeof AttendancesIndexRoute
@@ -177,23 +159,16 @@ export interface FileRouteTypes {
   fullPaths:
     | '/attendances'
     | '/members'
-    | '/members/absent'
     | '/members/late'
     | '/members/present'
     | '/attendances/'
     | '/members/'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/members/absent'
-    | '/members/late'
-    | '/members/present'
-    | '/attendances'
-    | '/members'
+  to: '/members/late' | '/members/present' | '/attendances' | '/members'
   id:
     | '__root__'
     | '/attendances'
     | '/members'
-    | '/members/absent'
     | '/members/late'
     | '/members/present'
     | '/attendances/'
@@ -236,15 +211,10 @@ export const routeTree = rootRoute
     "/members": {
       "filePath": "members/route.tsx",
       "children": [
-        "/members/absent",
         "/members/late",
         "/members/present",
         "/members/"
       ]
-    },
-    "/members/absent": {
-      "filePath": "members/absent.tsx",
-      "parent": "/members"
     },
     "/members/late": {
       "filePath": "members/late.tsx",

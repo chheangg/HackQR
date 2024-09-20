@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { MemberDocument } from "./member.document";
 import { MemberService } from "./member.service";
 import { MemberDto } from "./member.dto";
 import { MemberAttendanceDto } from "./member-attendance.dto";
+import { MemberStatus } from "./member-status.enum";
 
 @Controller('members')
 export class MemberController {
@@ -11,9 +12,12 @@ export class MemberController {
   ) {}
 
   @Get()
-  async findAllMembers(): Promise<MemberDto[]> {
+  async findAllMembers(
+    @Query('date') date: string,
+    @Query('status') status: MemberStatus | '' | null
+  ): Promise<MemberDto[]> {
     return this.memberService.convertToMemberDtos(
-      await this.memberService.findAll()
+      await this.memberService.findAll({ date, status })
     );
   }
 
