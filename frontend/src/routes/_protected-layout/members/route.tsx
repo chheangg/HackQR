@@ -32,8 +32,6 @@ function MemberLayoutPage() {
     return 'Empty';
   }
 
-  console.log(data);
-
   const todayDate = dayjs().format('YYYY-MM-DD');
   const isToday = data.find((a) => todayDate === a.date);
 

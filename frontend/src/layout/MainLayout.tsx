@@ -1,10 +1,13 @@
-import { Menu } from 'lucide-react';
+import { Menu, ScanQrCode, X } from 'lucide-react';
 import { Aside } from "../features/Aside";
 import { AsideItem, AsideItemProps } from "../features/Aside/components/AsideItem";
 import { NavBar } from "../features/NavBar";
 import { NavBarItem } from "../features/NavBar/components/NavBarItem";
 import { Button } from '../components/ui/button';
 import { MobileDrawer } from '../features/MobileDrawer';
+import { useState } from 'react';
+import { IDetectedBarcode, Scanner } from '@yudiel/react-qr-scanner';
+import { useNavigate } from '@tanstack/react-router';
 
 const navData: AsideItemProps[] = [
   {
@@ -27,8 +30,40 @@ interface MainLayoutProps {
 }
 
 export function MainLayout({ children }: MainLayoutProps) {
+  const [openScanner, setOpenScanner] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  function onScan(result: IDetectedBarcode[]) {
+    const qrResult = result[0];
+    const memberId = qrResult.rawValue;
+
+    const regEx = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+    const isUUID = regEx.test(memberId);
+
+    if (!isUUID) {
+      setOpenScanner(false);
+    }
+
+    setOpenScanner(false);
+    
+    navigate({ to: '/members/' + memberId });
+  }
+
   return (
     <div className="bg-neutral-100 h-screen font-body">
+      <div className={openScanner ? 'block' : 'hidden'}>
+        <div className='z-10 absolute inset-0 place-content-center grid bg-gray-500 bg-opacity-50'>
+          <div className='flex flex-row-reverse'>
+            <Button className='mr-4' size='icon' variant="outline" onClick={() => setOpenScanner(false)}>
+              <X />
+            </Button>
+          </div>
+          <div className='mt-4'>
+            <Scanner paused={!openScanner} onScan={onScan} />
+          </div>
+        </div>
+      </div>
       <NavBar>
         <NavBarItem>
           HackQR
@@ -36,7 +71,14 @@ export function MainLayout({ children }: MainLayoutProps) {
         <div>
 
         </div>
-        <NavBarItem>
+        <NavBarItem className='mr-4'>
+          <Button 
+            onClick={() => setOpenScanner(true)} 
+            className='flex gap-2 md:hidden bg-green-500 text-lg'
+          >
+            <ScanQrCode />
+            Scan
+          </Button>
         </NavBarItem>
         <NavBarItem>
           <MobileDrawer navData={navData}>

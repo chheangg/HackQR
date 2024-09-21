@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as PublicLayoutImport } from './routes/_public-layout'
 import { Route as ProtectedLayoutImport } from './routes/_protected-layout'
+import { Route as ProtectedLayoutIndexImport } from './routes/_protected-layout/index'
 import { Route as ProtectedLayoutMembersRouteImport } from './routes/_protected-layout/members/route'
 import { Route as ProtectedLayoutAttendancesRouteImport } from './routes/_protected-layout/attendances/route'
 import { Route as ProtectedLayoutMembersIndexImport } from './routes/_protected-layout/members/index'
@@ -31,6 +32,11 @@ const PublicLayoutRoute = PublicLayoutImport.update({
 const ProtectedLayoutRoute = ProtectedLayoutImport.update({
   id: '/_protected-layout',
   getParentRoute: () => rootRoute,
+} as any)
+
+const ProtectedLayoutIndexRoute = ProtectedLayoutIndexImport.update({
+  path: '/',
+  getParentRoute: () => ProtectedLayoutRoute,
 } as any)
 
 const ProtectedLayoutMembersRouteRoute =
@@ -108,6 +114,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedLayoutMembersRouteImport
       parentRoute: typeof ProtectedLayoutImport
     }
+    '/_protected-layout/': {
+      id: '/_protected-layout/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof ProtectedLayoutIndexImport
+      parentRoute: typeof ProtectedLayoutImport
+    }
     '/_protected-layout/members/late': {
       id: '/_protected-layout/members/late'
       path: '/late'
@@ -183,6 +196,7 @@ const ProtectedLayoutMembersRouteRouteWithChildren =
 interface ProtectedLayoutRouteChildren {
   ProtectedLayoutAttendancesRouteRoute: typeof ProtectedLayoutAttendancesRouteRouteWithChildren
   ProtectedLayoutMembersRouteRoute: typeof ProtectedLayoutMembersRouteRouteWithChildren
+  ProtectedLayoutIndexRoute: typeof ProtectedLayoutIndexRoute
 }
 
 const ProtectedLayoutRouteChildren: ProtectedLayoutRouteChildren = {
@@ -190,6 +204,7 @@ const ProtectedLayoutRouteChildren: ProtectedLayoutRouteChildren = {
     ProtectedLayoutAttendancesRouteRouteWithChildren,
   ProtectedLayoutMembersRouteRoute:
     ProtectedLayoutMembersRouteRouteWithChildren,
+  ProtectedLayoutIndexRoute: ProtectedLayoutIndexRoute,
 }
 
 const ProtectedLayoutRouteWithChildren = ProtectedLayoutRoute._addFileChildren(
@@ -212,6 +227,7 @@ export interface FileRoutesByFullPath {
   '': typeof PublicLayoutRouteWithChildren
   '/attendances': typeof ProtectedLayoutAttendancesRouteRouteWithChildren
   '/members': typeof ProtectedLayoutMembersRouteRouteWithChildren
+  '/': typeof ProtectedLayoutIndexRoute
   '/members/late': typeof ProtectedLayoutMembersLateRoute
   '/members/present': typeof ProtectedLayoutMembersPresentRoute
   '/members/$memberId': typeof PublicLayoutMembersMemberIdRoute
@@ -221,6 +237,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '': typeof PublicLayoutRouteWithChildren
+  '/': typeof ProtectedLayoutIndexRoute
   '/members/late': typeof ProtectedLayoutMembersLateRoute
   '/members/present': typeof ProtectedLayoutMembersPresentRoute
   '/members/$memberId': typeof PublicLayoutMembersMemberIdRoute
@@ -234,6 +251,7 @@ export interface FileRoutesById {
   '/_public-layout': typeof PublicLayoutRouteWithChildren
   '/_protected-layout/attendances': typeof ProtectedLayoutAttendancesRouteRouteWithChildren
   '/_protected-layout/members': typeof ProtectedLayoutMembersRouteRouteWithChildren
+  '/_protected-layout/': typeof ProtectedLayoutIndexRoute
   '/_protected-layout/members/late': typeof ProtectedLayoutMembersLateRoute
   '/_protected-layout/members/present': typeof ProtectedLayoutMembersPresentRoute
   '/_public-layout/members/$memberId': typeof PublicLayoutMembersMemberIdRoute
@@ -247,6 +265,7 @@ export interface FileRouteTypes {
     | ''
     | '/attendances'
     | '/members'
+    | '/'
     | '/members/late'
     | '/members/present'
     | '/members/$memberId'
@@ -255,6 +274,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | ''
+    | '/'
     | '/members/late'
     | '/members/present'
     | '/members/$memberId'
@@ -266,6 +286,7 @@ export interface FileRouteTypes {
     | '/_public-layout'
     | '/_protected-layout/attendances'
     | '/_protected-layout/members'
+    | '/_protected-layout/'
     | '/_protected-layout/members/late'
     | '/_protected-layout/members/present'
     | '/_public-layout/members/$memberId'
@@ -304,7 +325,8 @@ export const routeTree = rootRoute
       "filePath": "_protected-layout.tsx",
       "children": [
         "/_protected-layout/attendances",
-        "/_protected-layout/members"
+        "/_protected-layout/members",
+        "/_protected-layout/"
       ]
     },
     "/_public-layout": {
@@ -328,6 +350,10 @@ export const routeTree = rootRoute
         "/_protected-layout/members/present",
         "/_protected-layout/members/"
       ]
+    },
+    "/_protected-layout/": {
+      "filePath": "_protected-layout/index.tsx",
+      "parent": "/_protected-layout"
     },
     "/_protected-layout/members/late": {
       "filePath": "_protected-layout/members/late.tsx",
