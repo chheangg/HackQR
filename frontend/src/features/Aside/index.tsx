@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 
 interface AsideProps {
   children: React.ReactNode;
@@ -6,8 +6,8 @@ interface AsideProps {
 
 export function Aside({ children }: AsideProps) {
   return (
-    <div className="flex flex-col gap-1">
+    <div className="md:flex flex-col gap-1 hidden">
       {children}
     </div>
-  )
+  );
 }

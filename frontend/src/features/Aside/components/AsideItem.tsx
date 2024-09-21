@@ -2,7 +2,6 @@ import { useLocation, useNavigate } from "@tanstack/react-router";
 import { Button } from "../../../components/ui/button";
 
 export interface AsideItemProps {
-
   to: string;
   content: string;
   childRoutes?: RegExp[];
@@ -30,5 +29,5 @@ export function AsideItem({ to, content, childRoutes }: AsideItemProps) {
     >
       {content}
     </Button>
-  )
+  );
 }

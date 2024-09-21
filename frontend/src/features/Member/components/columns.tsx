@@ -15,8 +15,8 @@ export const columns: ColumnDef<Member>[] = [
     header: 'status',
     cell: ({ row }) => {
       const date = String(row.original.date);
-      const attendances: { [key: string]: MemberAttendance} = row.original.attendances;
+      const attendances: Record<string, MemberAttendance> = row.original.attendances;
       return attendances[date].status;
     }
-  },
-]
+  }
+];

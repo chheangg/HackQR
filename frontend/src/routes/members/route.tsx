@@ -1,39 +1,41 @@
-import { createFileRoute, Outlet, useNavigate } from '@tanstack/react-router'
-import { Tabs, TabsList, TabsTrigger } from '../../components/ui/tabs'
-import { useQuery } from '@tanstack/react-query'
-import { getAllAttendances } from '../../api/attendance'
-import { Select } from '../../components/ui/select'
-import { SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select'
-import { default as dayjs } from 'dayjs'
-import { useState } from 'react'
-import { MemberTableContext } from '../../features/Member/contexts/MemberTableContext'
+import { createFileRoute, Outlet, useNavigate } from '@tanstack/react-router';
+import { Tabs, TabsList, TabsTrigger } from '../../components/ui/tabs';
+import { useQuery } from '@tanstack/react-query';
+import { getAllAttendances } from '../../api/attendance';
+import { Select } from '../../components/ui/select';
+import { SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select';
+import { default as dayjs } from 'dayjs';
+import { useState } from 'react';
+import { MemberTableContext } from '../../features/Member/contexts/MemberTableContext';
 
 export const Route = createFileRoute('/members')({
   component: () => <MemberLayoutPage />
-})
+});
 
 function MemberLayoutPage() {
   const [tableOption, setTableOption] = useState<string>("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['member-attendance-dates'],
     queryFn: async () => await getAllAttendances()
-  })
+  });
 
   if (isError) {
-    return "Error"
+    return "Error";
   }
 
   if (isLoading) {
-    return "Loading"
+    return "Loading";
   }
 
   if (!data) {
-    return "Empty"
+    return "Empty";
   }
 
-  const todayDate = dayjs().format('YYYY-MM-DD')
+  console.log(data);
+
+  const todayDate = dayjs().format('YYYY-MM-DD');
   const isToday = data.find(a => todayDate === a.date);
   
   if (isToday && !tableOption) {
@@ -85,5 +87,5 @@ function MemberLayoutPage() {
         </div>
       </Tabs>
     </div>
-  )
+  );
 }

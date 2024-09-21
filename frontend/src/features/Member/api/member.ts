@@ -12,5 +12,5 @@ export const getAllMembers = (q: memberQueryOptions): Promise<Member[]> =>
   request({
     url: '/members',
     method: 'GET',
-    params: q,
-  })
+    params: q
+  });

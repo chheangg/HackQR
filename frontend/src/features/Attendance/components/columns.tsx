@@ -1,5 +1,5 @@
-import { ColumnDef } from "@tanstack/react-table"
-import { Attendance } from "../types/Attendance"
+import { ColumnDef } from "@tanstack/react-table";
+import { Attendance } from "../types/Attendance";
 import { default as dayjs } from 'dayjs';
 
 function formatDate(date: Date) {
@@ -9,7 +9,7 @@ function formatDate(date: Date) {
 export const columns: ColumnDef<Attendance>[] = [
   {
     accessorKey: "date",
-    header: "Event Date",
+    header: "Event Date"
   },
   {
     accessorKey: "timeStart",
@@ -26,4 +26,4 @@ export const columns: ColumnDef<Attendance>[] = [
     header: "Time End",
     cell: ({ row }) => formatDate(row.getValue('timeEnd'))
   }
-]
+];

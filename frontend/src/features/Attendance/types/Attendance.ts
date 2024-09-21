@@ -1,4 +1,4 @@
-export type Attendance = {
+export interface Attendance {
   date: string;
   timeStart: Date;
   timeEnd: Date;

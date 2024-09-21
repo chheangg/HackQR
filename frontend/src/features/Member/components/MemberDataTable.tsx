@@ -11,30 +11,30 @@ interface MemberDataTableProps {
 }
 
 export function MemberDataTable({ status }: MemberDataTableProps) {
-  const { date } = useContext(MemberTableContext)
+  const { date } = useContext(MemberTableContext);
   const { data, isLoading, isError } = useQuery({
     queryKey: ['members-' + status + '-' + date],
     queryFn: async () => await getAllMembers({ status, date })
-  })
+  });
 
   if (isError) {
-    return "Error"
+    return "Error";
   }
 
   if (isLoading) {
-    return "Loading"
+    return "Loading";
   }
 
   if (!data) {
-    return <DataTable columns={columns} data={[]} />
+    return <DataTable columns={columns} data={[]} />;
   }
 
   const formattedData = data?.map((d) => ({
     ...d,
     date
-  }))
+  }));
 
   return (
     <DataTable columns={columns} data={formattedData} />
-  )
+  );
 }
