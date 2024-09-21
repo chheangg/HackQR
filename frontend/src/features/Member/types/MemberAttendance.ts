@@ -1,7 +1,7 @@
 import { MemberStatus } from "./MemberStatus";
 
-export type MemberAttendance = {
-  date: String;
+export interface MemberAttendance {
+  date: string;
   checkIn: Date;
   status: MemberStatus;
 }

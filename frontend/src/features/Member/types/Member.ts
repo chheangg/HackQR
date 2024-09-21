@@ -1,10 +1,8 @@
 import { MemberAttendance } from "./MemberAttendance";
 
-export type Member = {
+export interface Member {
   id: string;
   name: string;
-  attendances: {
-    [key: string]: MemberAttendance;
-  }
+  attendances: Record<string, MemberAttendance>
   date?: string;
-};
+}

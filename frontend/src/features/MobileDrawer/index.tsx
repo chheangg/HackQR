@@ -13,7 +13,7 @@ export interface MobileDrawerProps {
 export function MobileDrawer({ children, navData }: MobileDrawerProps) {
   const [open, setOpen] = useState<boolean>(false);
   return (
-    <Drawer open={open} direction="right">
+    <Drawer open={open} onOpenChange={setOpen} direction="right">
       <DrawerTrigger onClick={() => setOpen(true)}>{children}</DrawerTrigger>
       <DrawerContent>
         <div className="relative place-content-center grid w-[280px] h-full">

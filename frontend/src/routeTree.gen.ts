@@ -11,179 +11,277 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as MembersRouteImport } from './routes/members/route'
-import { Route as AttendancesRouteImport } from './routes/attendances/route'
-import { Route as MembersIndexImport } from './routes/members/index'
-import { Route as AttendancesIndexImport } from './routes/attendances/index'
-import { Route as MembersPresentImport } from './routes/members/present'
-import { Route as MembersLateImport } from './routes/members/late'
+import { Route as PublicLayoutImport } from './routes/_public-layout'
+import { Route as ProtectedLayoutImport } from './routes/_protected-layout'
+import { Route as ProtectedLayoutMembersRouteImport } from './routes/_protected-layout/members/route'
+import { Route as ProtectedLayoutAttendancesRouteImport } from './routes/_protected-layout/attendances/route'
+import { Route as ProtectedLayoutMembersIndexImport } from './routes/_protected-layout/members/index'
+import { Route as ProtectedLayoutAttendancesIndexImport } from './routes/_protected-layout/attendances/index'
+import { Route as PublicLayoutMembersMemberIdImport } from './routes/_public-layout/members/$memberId'
+import { Route as ProtectedLayoutMembersPresentImport } from './routes/_protected-layout/members/present'
+import { Route as ProtectedLayoutMembersLateImport } from './routes/_protected-layout/members/late'
 
 // Create/Update Routes
 
-const MembersRouteRoute = MembersRouteImport.update({
-  path: '/members',
+const PublicLayoutRoute = PublicLayoutImport.update({
+  id: '/_public-layout',
   getParentRoute: () => rootRoute,
 } as any)
 
-const AttendancesRouteRoute = AttendancesRouteImport.update({
-  path: '/attendances',
+const ProtectedLayoutRoute = ProtectedLayoutImport.update({
+  id: '/_protected-layout',
   getParentRoute: () => rootRoute,
 } as any)
 
-const MembersIndexRoute = MembersIndexImport.update({
-  path: '/',
-  getParentRoute: () => MembersRouteRoute,
-} as any)
+const ProtectedLayoutMembersRouteRoute =
+  ProtectedLayoutMembersRouteImport.update({
+    path: '/members',
+    getParentRoute: () => ProtectedLayoutRoute,
+  } as any)
 
-const AttendancesIndexRoute = AttendancesIndexImport.update({
-  path: '/',
-  getParentRoute: () => AttendancesRouteRoute,
-} as any)
+const ProtectedLayoutAttendancesRouteRoute =
+  ProtectedLayoutAttendancesRouteImport.update({
+    path: '/attendances',
+    getParentRoute: () => ProtectedLayoutRoute,
+  } as any)
 
-const MembersPresentRoute = MembersPresentImport.update({
-  path: '/present',
-  getParentRoute: () => MembersRouteRoute,
-} as any)
+const ProtectedLayoutMembersIndexRoute =
+  ProtectedLayoutMembersIndexImport.update({
+    path: '/',
+    getParentRoute: () => ProtectedLayoutMembersRouteRoute,
+  } as any)
 
-const MembersLateRoute = MembersLateImport.update({
-  path: '/late',
-  getParentRoute: () => MembersRouteRoute,
-} as any)
+const ProtectedLayoutAttendancesIndexRoute =
+  ProtectedLayoutAttendancesIndexImport.update({
+    path: '/',
+    getParentRoute: () => ProtectedLayoutAttendancesRouteRoute,
+  } as any)
+
+const PublicLayoutMembersMemberIdRoute =
+  PublicLayoutMembersMemberIdImport.update({
+    path: '/members/$memberId',
+    getParentRoute: () => PublicLayoutRoute,
+  } as any)
+
+const ProtectedLayoutMembersPresentRoute =
+  ProtectedLayoutMembersPresentImport.update({
+    path: '/present',
+    getParentRoute: () => ProtectedLayoutMembersRouteRoute,
+  } as any)
+
+const ProtectedLayoutMembersLateRoute = ProtectedLayoutMembersLateImport.update(
+  {
+    path: '/late',
+    getParentRoute: () => ProtectedLayoutMembersRouteRoute,
+  } as any,
+)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/attendances': {
-      id: '/attendances'
+    '/_protected-layout': {
+      id: '/_protected-layout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof ProtectedLayoutImport
+      parentRoute: typeof rootRoute
+    }
+    '/_public-layout': {
+      id: '/_public-layout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof PublicLayoutImport
+      parentRoute: typeof rootRoute
+    }
+    '/_protected-layout/attendances': {
+      id: '/_protected-layout/attendances'
       path: '/attendances'
       fullPath: '/attendances'
-      preLoaderRoute: typeof AttendancesRouteImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof ProtectedLayoutAttendancesRouteImport
+      parentRoute: typeof ProtectedLayoutImport
     }
-    '/members': {
-      id: '/members'
+    '/_protected-layout/members': {
+      id: '/_protected-layout/members'
       path: '/members'
       fullPath: '/members'
-      preLoaderRoute: typeof MembersRouteImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof ProtectedLayoutMembersRouteImport
+      parentRoute: typeof ProtectedLayoutImport
     }
-    '/members/late': {
-      id: '/members/late'
+    '/_protected-layout/members/late': {
+      id: '/_protected-layout/members/late'
       path: '/late'
       fullPath: '/members/late'
-      preLoaderRoute: typeof MembersLateImport
-      parentRoute: typeof MembersRouteImport
+      preLoaderRoute: typeof ProtectedLayoutMembersLateImport
+      parentRoute: typeof ProtectedLayoutMembersRouteImport
     }
-    '/members/present': {
-      id: '/members/present'
+    '/_protected-layout/members/present': {
+      id: '/_protected-layout/members/present'
       path: '/present'
       fullPath: '/members/present'
-      preLoaderRoute: typeof MembersPresentImport
-      parentRoute: typeof MembersRouteImport
+      preLoaderRoute: typeof ProtectedLayoutMembersPresentImport
+      parentRoute: typeof ProtectedLayoutMembersRouteImport
     }
-    '/attendances/': {
-      id: '/attendances/'
+    '/_public-layout/members/$memberId': {
+      id: '/_public-layout/members/$memberId'
+      path: '/members/$memberId'
+      fullPath: '/members/$memberId'
+      preLoaderRoute: typeof PublicLayoutMembersMemberIdImport
+      parentRoute: typeof PublicLayoutImport
+    }
+    '/_protected-layout/attendances/': {
+      id: '/_protected-layout/attendances/'
       path: '/'
       fullPath: '/attendances/'
-      preLoaderRoute: typeof AttendancesIndexImport
-      parentRoute: typeof AttendancesRouteImport
+      preLoaderRoute: typeof ProtectedLayoutAttendancesIndexImport
+      parentRoute: typeof ProtectedLayoutAttendancesRouteImport
     }
-    '/members/': {
-      id: '/members/'
+    '/_protected-layout/members/': {
+      id: '/_protected-layout/members/'
       path: '/'
       fullPath: '/members/'
-      preLoaderRoute: typeof MembersIndexImport
-      parentRoute: typeof MembersRouteImport
+      preLoaderRoute: typeof ProtectedLayoutMembersIndexImport
+      parentRoute: typeof ProtectedLayoutMembersRouteImport
     }
   }
 }
 
 // Create and export the route tree
 
-interface AttendancesRouteRouteChildren {
-  AttendancesIndexRoute: typeof AttendancesIndexRoute
+interface ProtectedLayoutAttendancesRouteRouteChildren {
+  ProtectedLayoutAttendancesIndexRoute: typeof ProtectedLayoutAttendancesIndexRoute
 }
 
-const AttendancesRouteRouteChildren: AttendancesRouteRouteChildren = {
-  AttendancesIndexRoute: AttendancesIndexRoute,
+const ProtectedLayoutAttendancesRouteRouteChildren: ProtectedLayoutAttendancesRouteRouteChildren =
+  {
+    ProtectedLayoutAttendancesIndexRoute: ProtectedLayoutAttendancesIndexRoute,
+  }
+
+const ProtectedLayoutAttendancesRouteRouteWithChildren =
+  ProtectedLayoutAttendancesRouteRoute._addFileChildren(
+    ProtectedLayoutAttendancesRouteRouteChildren,
+  )
+
+interface ProtectedLayoutMembersRouteRouteChildren {
+  ProtectedLayoutMembersLateRoute: typeof ProtectedLayoutMembersLateRoute
+  ProtectedLayoutMembersPresentRoute: typeof ProtectedLayoutMembersPresentRoute
+  ProtectedLayoutMembersIndexRoute: typeof ProtectedLayoutMembersIndexRoute
 }
 
-const AttendancesRouteRouteWithChildren =
-  AttendancesRouteRoute._addFileChildren(AttendancesRouteRouteChildren)
+const ProtectedLayoutMembersRouteRouteChildren: ProtectedLayoutMembersRouteRouteChildren =
+  {
+    ProtectedLayoutMembersLateRoute: ProtectedLayoutMembersLateRoute,
+    ProtectedLayoutMembersPresentRoute: ProtectedLayoutMembersPresentRoute,
+    ProtectedLayoutMembersIndexRoute: ProtectedLayoutMembersIndexRoute,
+  }
 
-interface MembersRouteRouteChildren {
-  MembersLateRoute: typeof MembersLateRoute
-  MembersPresentRoute: typeof MembersPresentRoute
-  MembersIndexRoute: typeof MembersIndexRoute
+const ProtectedLayoutMembersRouteRouteWithChildren =
+  ProtectedLayoutMembersRouteRoute._addFileChildren(
+    ProtectedLayoutMembersRouteRouteChildren,
+  )
+
+interface ProtectedLayoutRouteChildren {
+  ProtectedLayoutAttendancesRouteRoute: typeof ProtectedLayoutAttendancesRouteRouteWithChildren
+  ProtectedLayoutMembersRouteRoute: typeof ProtectedLayoutMembersRouteRouteWithChildren
 }
 
-const MembersRouteRouteChildren: MembersRouteRouteChildren = {
-  MembersLateRoute: MembersLateRoute,
-  MembersPresentRoute: MembersPresentRoute,
-  MembersIndexRoute: MembersIndexRoute,
+const ProtectedLayoutRouteChildren: ProtectedLayoutRouteChildren = {
+  ProtectedLayoutAttendancesRouteRoute:
+    ProtectedLayoutAttendancesRouteRouteWithChildren,
+  ProtectedLayoutMembersRouteRoute:
+    ProtectedLayoutMembersRouteRouteWithChildren,
 }
 
-const MembersRouteRouteWithChildren = MembersRouteRoute._addFileChildren(
-  MembersRouteRouteChildren,
+const ProtectedLayoutRouteWithChildren = ProtectedLayoutRoute._addFileChildren(
+  ProtectedLayoutRouteChildren,
+)
+
+interface PublicLayoutRouteChildren {
+  PublicLayoutMembersMemberIdRoute: typeof PublicLayoutMembersMemberIdRoute
+}
+
+const PublicLayoutRouteChildren: PublicLayoutRouteChildren = {
+  PublicLayoutMembersMemberIdRoute: PublicLayoutMembersMemberIdRoute,
+}
+
+const PublicLayoutRouteWithChildren = PublicLayoutRoute._addFileChildren(
+  PublicLayoutRouteChildren,
 )
 
 export interface FileRoutesByFullPath {
-  '/attendances': typeof AttendancesRouteRouteWithChildren
-  '/members': typeof MembersRouteRouteWithChildren
-  '/members/late': typeof MembersLateRoute
-  '/members/present': typeof MembersPresentRoute
-  '/attendances/': typeof AttendancesIndexRoute
-  '/members/': typeof MembersIndexRoute
+  '': typeof PublicLayoutRouteWithChildren
+  '/attendances': typeof ProtectedLayoutAttendancesRouteRouteWithChildren
+  '/members': typeof ProtectedLayoutMembersRouteRouteWithChildren
+  '/members/late': typeof ProtectedLayoutMembersLateRoute
+  '/members/present': typeof ProtectedLayoutMembersPresentRoute
+  '/members/$memberId': typeof PublicLayoutMembersMemberIdRoute
+  '/attendances/': typeof ProtectedLayoutAttendancesIndexRoute
+  '/members/': typeof ProtectedLayoutMembersIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '/members/late': typeof MembersLateRoute
-  '/members/present': typeof MembersPresentRoute
-  '/attendances': typeof AttendancesIndexRoute
-  '/members': typeof MembersIndexRoute
+  '': typeof PublicLayoutRouteWithChildren
+  '/members/late': typeof ProtectedLayoutMembersLateRoute
+  '/members/present': typeof ProtectedLayoutMembersPresentRoute
+  '/members/$memberId': typeof PublicLayoutMembersMemberIdRoute
+  '/attendances': typeof ProtectedLayoutAttendancesIndexRoute
+  '/members': typeof ProtectedLayoutMembersIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/attendances': typeof AttendancesRouteRouteWithChildren
-  '/members': typeof MembersRouteRouteWithChildren
-  '/members/late': typeof MembersLateRoute
-  '/members/present': typeof MembersPresentRoute
-  '/attendances/': typeof AttendancesIndexRoute
-  '/members/': typeof MembersIndexRoute
+  '/_protected-layout': typeof ProtectedLayoutRouteWithChildren
+  '/_public-layout': typeof PublicLayoutRouteWithChildren
+  '/_protected-layout/attendances': typeof ProtectedLayoutAttendancesRouteRouteWithChildren
+  '/_protected-layout/members': typeof ProtectedLayoutMembersRouteRouteWithChildren
+  '/_protected-layout/members/late': typeof ProtectedLayoutMembersLateRoute
+  '/_protected-layout/members/present': typeof ProtectedLayoutMembersPresentRoute
+  '/_public-layout/members/$memberId': typeof PublicLayoutMembersMemberIdRoute
+  '/_protected-layout/attendances/': typeof ProtectedLayoutAttendancesIndexRoute
+  '/_protected-layout/members/': typeof ProtectedLayoutMembersIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | ''
     | '/attendances'
     | '/members'
     | '/members/late'
     | '/members/present'
+    | '/members/$memberId'
     | '/attendances/'
     | '/members/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/members/late' | '/members/present' | '/attendances' | '/members'
-  id:
-    | '__root__'
-    | '/attendances'
-    | '/members'
+  to:
+    | ''
     | '/members/late'
     | '/members/present'
-    | '/attendances/'
-    | '/members/'
+    | '/members/$memberId'
+    | '/attendances'
+    | '/members'
+  id:
+    | '__root__'
+    | '/_protected-layout'
+    | '/_public-layout'
+    | '/_protected-layout/attendances'
+    | '/_protected-layout/members'
+    | '/_protected-layout/members/late'
+    | '/_protected-layout/members/present'
+    | '/_public-layout/members/$memberId'
+    | '/_protected-layout/attendances/'
+    | '/_protected-layout/members/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  AttendancesRouteRoute: typeof AttendancesRouteRouteWithChildren
-  MembersRouteRoute: typeof MembersRouteRouteWithChildren
+  ProtectedLayoutRoute: typeof ProtectedLayoutRouteWithChildren
+  PublicLayoutRoute: typeof PublicLayoutRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  AttendancesRouteRoute: AttendancesRouteRouteWithChildren,
-  MembersRouteRoute: MembersRouteRouteWithChildren,
+  ProtectedLayoutRoute: ProtectedLayoutRouteWithChildren,
+  PublicLayoutRoute: PublicLayoutRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -198,39 +296,58 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/attendances",
-        "/members"
+        "/_protected-layout",
+        "/_public-layout"
       ]
     },
-    "/attendances": {
-      "filePath": "attendances/route.tsx",
+    "/_protected-layout": {
+      "filePath": "_protected-layout.tsx",
       "children": [
-        "/attendances/"
+        "/_protected-layout/attendances",
+        "/_protected-layout/members"
       ]
     },
-    "/members": {
-      "filePath": "members/route.tsx",
+    "/_public-layout": {
+      "filePath": "_public-layout.tsx",
       "children": [
-        "/members/late",
-        "/members/present",
-        "/members/"
+        "/_public-layout/members/$memberId"
       ]
     },
-    "/members/late": {
-      "filePath": "members/late.tsx",
-      "parent": "/members"
+    "/_protected-layout/attendances": {
+      "filePath": "_protected-layout/attendances/route.tsx",
+      "parent": "/_protected-layout",
+      "children": [
+        "/_protected-layout/attendances/"
+      ]
     },
-    "/members/present": {
-      "filePath": "members/present.tsx",
-      "parent": "/members"
+    "/_protected-layout/members": {
+      "filePath": "_protected-layout/members/route.tsx",
+      "parent": "/_protected-layout",
+      "children": [
+        "/_protected-layout/members/late",
+        "/_protected-layout/members/present",
+        "/_protected-layout/members/"
+      ]
     },
-    "/attendances/": {
-      "filePath": "attendances/index.tsx",
-      "parent": "/attendances"
+    "/_protected-layout/members/late": {
+      "filePath": "_protected-layout/members/late.tsx",
+      "parent": "/_protected-layout/members"
     },
-    "/members/": {
-      "filePath": "members/index.tsx",
-      "parent": "/members"
+    "/_protected-layout/members/present": {
+      "filePath": "_protected-layout/members/present.tsx",
+      "parent": "/_protected-layout/members"
+    },
+    "/_public-layout/members/$memberId": {
+      "filePath": "_public-layout/members/$memberId.tsx",
+      "parent": "/_public-layout"
+    },
+    "/_protected-layout/attendances/": {
+      "filePath": "_protected-layout/attendances/index.tsx",
+      "parent": "/_protected-layout/attendances"
+    },
+    "/_protected-layout/members/": {
+      "filePath": "_protected-layout/members/index.tsx",
+      "parent": "/_protected-layout/members"
     }
   }
 }
