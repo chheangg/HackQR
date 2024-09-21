@@ -5,6 +5,14 @@
 $ npm install
 ```
 
+## Environment Config
+below is the .env file configuration
+```
+SA_KEY=
+```
+
+`SA_KEY` must file location to the Firebase key's configuration file (.json)
+
 ## Running the app
 
 ```bash
