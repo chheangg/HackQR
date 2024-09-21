@@ -41,6 +41,16 @@ export class MemberService {
     return members; 
   }
 
+  async findMemberById(id: string): Promise<MemberDocument> {
+    const docRef = this.membersCollection.doc(id);
+    const memberDoc = await docRef.get();
+
+    const member = memberDoc.data();
+    member.id = memberDoc.id;
+    
+    return member;
+  }
+
   async create(memberDto: MemberDto): Promise<MemberDocument> {
     const memberId = uuidv4();
 

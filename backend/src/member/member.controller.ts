@@ -21,6 +21,15 @@ export class MemberController {
     );
   }
 
+  @Get(':id')
+  async findMemberById(
+    @Param('id') id: string
+  ): Promise<MemberDto> {
+    return this.memberService.convertToMemberDto(
+      await this.memberService.findMemberById(id)
+    )
+  }
+
   @Post()
   async createMember(
     @Body() memberDto: MemberDto
