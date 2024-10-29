@@ -9,7 +9,7 @@ $ npm install
 below is the .env file configuration
 ```
 SA_KEY=
-APP_PORT=
+PORT=
 ```
 
 `SA_KEY` must file location to the Firebase key's configuration file (.json). A port is needed to run this backend server.
