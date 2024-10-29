@@ -2,7 +2,7 @@ import { MemberAttendance } from "./member-attendance";
 import { MemberStatus } from "./member-status.enum";
 
 export class MemberDocument {
-  static collectionName = 'members';
+  static collectionName = 'logins';
   
   id?: string;
   name: string;

@@ -7,7 +7,6 @@ export class MemberDto {
   id: string;
 
   @IsString()
-  @IsNotEmpty()
   name: string;
 
   attendances: {

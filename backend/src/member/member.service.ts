@@ -52,9 +52,7 @@ export class MemberService {
   }
 
   async create(memberDto: MemberDto): Promise<MemberDocument> {
-    const memberId = uuidv4();
-
-    const docRef = this.membersCollection.doc(memberId);
+    const docRef = this.membersCollection.doc(memberDto.id);
     const attendances = await this.attendanceService.findAll();
     const memberAttendanceList: MemberAttendance[] = attendances.map((a) => ({
       checkIn: Timestamp.fromDate(new Date(Date.now())),
@@ -64,8 +62,7 @@ export class MemberService {
     const memberAttendance: { [key: string]: MemberAttendance } = 
       memberAttendanceList.reduce((acc,curr,i)=> (acc[attendances[i].date]=curr,acc),{})
 
-    await docRef.set({
-      name: memberDto.name,
+    await docRef.update({
       attendances: memberAttendance,
     });
 
