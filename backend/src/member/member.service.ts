@@ -51,8 +51,8 @@ export class MemberService {
     return member;
   }
 
-  async create(memberDto: MemberDto): Promise<MemberDocument> {
-    const docRef = this.membersCollection.doc(memberDto.id);
+  async create(id: string): Promise<MemberDocument> {
+    const docRef = this.membersCollection.doc(id);
     const attendances = await this.attendanceService.findAll();
     const memberAttendanceList: MemberAttendance[] = attendances.map((a) => ({
       checkIn: Timestamp.fromDate(new Date(Date.now())),

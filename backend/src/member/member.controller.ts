@@ -30,12 +30,12 @@ export class MemberController {
     )
   }
 
-  @Post()
+  @Post(':id')
   async createMember(
-    @Body() memberDto: MemberDto
+    @Param('id') id: string,
   ): Promise<MemberDto> {
     return this.memberService.convertToMemberDto(
-      await this.memberService.create(memberDto)
+      await this.memberService.create(id)
     );
   }
 
