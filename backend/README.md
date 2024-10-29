@@ -17,7 +17,7 @@ PORT=
 ```
 
 ## API References
-#### Member Endpoints
+### Member Endpoints
 
 | Method   | URL                                      | Description                              |
 | -------- | ---------------------------------------- | ---------------------------------------- |
@@ -28,7 +28,7 @@ status  |
 | `PATCH`  | `/api/members/${id}`                     | Update member.                           |
 | `DELETE` | `/api/members/${id}`                     | Delete member.                           |
 
-**NOTE:** The POST request is only for populating a member, not creating it. The main backend server for
+**NOTE: The POST request is only for populating a member, not creating it. The main backend server for
 registering members SHOULD and MUST be used.**
 
 ### Attendances Endpoints
