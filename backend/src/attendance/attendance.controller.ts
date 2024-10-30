@@ -36,6 +36,7 @@ export class AttendanceController {
     @Param('id') id: string,
     @Body() attendanceDto: AttendanceDto
   ): Promise<AttendanceDto> {
+    console.log(id, 'HEY', attendanceDto);
     return this.attendanceService.convertToAttendanceDto(
       await this.attendanceService.update(id, attendanceDto)
     );

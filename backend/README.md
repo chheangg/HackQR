@@ -23,9 +23,10 @@ PORT=
 | -------- | ---------------------------------------- | ---------------------------------------- |
 | `GET`    | `/api/members`                           | Retrieve all members.                    |
 | `GET`    | `/api/members/${id}`                     | Retrieve a specific member with id ${id} |
-| `POST`   | `/api/members/${id}`                     | Populate member with all attendnaces date status  |
-| `PATCH`  | `/api/members/${id}`                     | Update member.                           |
+| `POST`   | `/api/members/${id}`                     | Populate member with all attendnaces date status|
+| `PUT`  | `/api/members/${id}`                     | Update member.                           |
 | `DELETE` | `/api/members/${id}`                     | Delete member.                           |
+| `PUT` | `/api/members/${id}/move-status/${date}`                     | Check a member in.                           |
 
 **NOTE: The POST request is only for populating a member, not creating it. The main backend server for
 registering members SHOULD and MUST be used.**

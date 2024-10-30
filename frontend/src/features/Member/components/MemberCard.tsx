@@ -21,7 +21,7 @@ export function MemberCard({ member }: MemberCardProps) {
   });
 
   const memberStatusMutation = useMutation({
-    mutationFn: (memberAttendance: MemberAttendance) => moveMemberStatus(member.id, memberAttendance)
+    mutationFn: (date: string) => moveMemberStatus(member.id, date)
   });
 
   const navigate = useNavigate();
@@ -35,14 +35,7 @@ export function MemberCard({ member }: MemberCardProps) {
 
     if (!isToday) return;
     
-    
-    const memberAttendance: MemberAttendance = {
-      checkIn: dayjs().toDate(),
-      status: MemberStatus.PRESENT,
-      date: isToday.date
-    };
-    
-    memberStatusMutation.mutate(memberAttendance);
+    memberStatusMutation.mutate(todayDate);
     navigate({ to: '/members' });
   }
 

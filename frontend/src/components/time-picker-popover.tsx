@@ -8,11 +8,12 @@ import { ControllerRenderProps, FieldValues } from "react-hook-form";
 import { format } from "date-fns";
 
 interface TimePickerPopoverProps<T extends FieldValues> {
-  date: Date;
+  initDate?: Date;
   field: ControllerRenderProps<T>;
 }
 
-export function TimePickerPopover<T extends FieldValues>({ date, field }: TimePickerPopoverProps<T>) {
+export function TimePickerPopover<T extends FieldValues>({ initDate, field }: TimePickerPopoverProps<T>) {
+  console.log(initDate);
   return (
     <Popover>
       <FormControl>
@@ -22,8 +23,9 @@ export function TimePickerPopover<T extends FieldValues>({ date, field }: TimePi
             className={cn(
               "w-[280px] justify-start text-left font-normal",
               !field.value && "text-muted-foreground",
-              !date && 'opacity-50 pointer-events-none'
+              !initDate && 'opacity-50 pointer-events-none'
             )}
+            disabled={!initDate}
           >
             <CalendarIcon className="mr-2 w-4 h-4" />
             {field.value ? (
@@ -38,7 +40,7 @@ export function TimePickerPopover<T extends FieldValues>({ date, field }: TimePi
         <div className="p-3 border-t border-border">
           <TimePicker
             setDate={field.onChange}
-            initDate={date}
+            initDate={initDate}
             date={field.value}
           />
         </div>

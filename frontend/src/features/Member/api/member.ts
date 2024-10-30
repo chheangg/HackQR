@@ -1,7 +1,6 @@
 
 import { request } from "../../../lib/request";
 import { Member } from "../types/Member";
-import { MemberAttendance } from "../types/MemberAttendance";
 import { MemberStatus } from "../types/MemberStatus";
 
 interface memberQueryOptions {
@@ -17,9 +16,8 @@ export const getAllMembers = (q: memberQueryOptions): Promise<Member[]> =>
   });
 
 
-export const moveMemberStatus = (id: string, memberAttendance: MemberAttendance): Promise<Member> =>
+export const moveMemberStatus = (id: string, date: string): Promise<Member> =>
   request({
-    url: `/members/${id}/move-status`,
-    method: 'PUT',
-    data: memberAttendance
+    url: `/members/${id}/move-status/${date}`,
+    method: 'PUT'
   });

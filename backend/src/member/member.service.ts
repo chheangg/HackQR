@@ -2,12 +2,12 @@ import { Inject, Injectable } from "@nestjs/common";
 import { MemberDocument } from "./member.document";
 import { CollectionReference, Timestamp } from "@google-cloud/firestore";
 import { MemberDto } from "./member.dto";
-import { v4 as uuidv4 } from 'uuid';
-import { MemberAttendanceDto } from "./member-attendance.dto";
 import { AttendanceService } from "src/attendance/attendance.service";
 import * as dayjs from 'dayjs'
 import { MemberStatus } from "./member-status.enum";
 import { MemberAttendance } from "./member-attendance";
+import { AttendanceDocument } from "src/attendance/attendance.document";
+import { MemberInvalidCheckinException } from "./member-invalid-checkin.exception";
 
 interface MemberQuery {
   date?: string;
@@ -89,32 +89,68 @@ export class MemberService {
     return member;
   }
 
-  async moveStatus(id: string, memberAttendanceDto: MemberAttendanceDto): Promise<MemberDocument> {
-    const attendance = await this.attendanceService.findDateByDateOrThrowError(memberAttendanceDto.date);
-
+  async moveStatus(id: string, date: string): Promise<MemberDocument> {
     const docRef = this.membersCollection.doc(id);
+    const memberDoc = await docRef.get();
+    const member = memberDoc.data();
 
-    // TODO: Fix this, it's redundant
-    let memberDoc = await docRef.get();
+    const attendance = await this.attendanceService.findDateByDateOrThrowError(date);
+    const checkIn = Date.now();
 
-    let member = memberDoc.data();
+    if (member.attendances[attendance.date] 
+      && 
+      (
+        member.attendances[attendance.date].status === MemberStatus.PRESENT
+        ||
+        member.attendances[attendance.date].status === MemberStatus.LATE
+      )
+      ) {
+      return member;
+    }
+
+    const startTimestamp = attendance.timeStart.toDate();
+    const lateTimestamp = attendance.timeLate.toDate();
+    const endTimestamp = attendance.timeEnd.toDate();
+    const checkInTimestamp = dayjs(checkIn);
+
+    if (checkInTimestamp.isAfter(endTimestamp)) {
+      throw new MemberInvalidCheckinException(
+        `Attempting to check-in member with id (${id}) after the end date of event date ${date}`
+      )
+    }
+
+    if (checkInTimestamp.isAfter(startTimestamp) && checkInTimestamp.isBefore(lateTimestamp)) {
+      await this.changeStatus(id, member,attendance, MemberStatus.PRESENT);
+      return (await docRef.get()).data();
+    }
+
+    if (checkInTimestamp.isAfter(startTimestamp) && checkInTimestamp.isAfter(lateTimestamp)) {
+      await this.changeStatus(id, member, attendance, MemberStatus.LATE);
+      return (await docRef.get()).data();
+    }
+
+    throw new MemberInvalidCheckinException(
+      `Attempting to check-in member with id (${id}) before the start date of event date ${date}`
+    )
+
+  }
+
+  async changeStatus(
+    id: string, 
+    member: MemberDocument, 
+    attendance: AttendanceDocument, 
+    status: MemberStatus): Promise<void> {
+    const docRef = this.membersCollection.doc(id);
 
     await docRef.update({
       attendances: {
         ...member.attendances,
         [attendance.date]: {
           checkIn: Timestamp.fromDate(dayjs(Date.now()).toDate()),
-          status: memberAttendanceDto.status
+          status
         }
       }
-    })
-
-    memberDoc = await docRef.get();
-
-    member = memberDoc.data();
-    member.id = memberDoc.id;
-    
-    return member;
+    });
   }
 
   async delete(id: string): Promise<MemberDocument> {

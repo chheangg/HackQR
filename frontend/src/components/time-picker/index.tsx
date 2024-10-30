@@ -8,8 +8,8 @@ import { Period } from "./utils/time-picker-utils";
 import { cn } from "../../lib/utils";
  
 interface TimePickerDemoProps {
-  date: Date | undefined;
   initDate: Date | undefined;
+  date: Date | undefined;
   setDate: (date: Date | undefined) => void;
 }
  
@@ -20,7 +20,6 @@ export function TimePicker({ initDate, date, setDate }: TimePickerDemoProps) {
   const hourRef = React.useRef<HTMLInputElement>(null);
   const secondRef = React.useRef<HTMLInputElement>(null);
   const periodRef = React.useRef<HTMLButtonElement>(null);
- 
   return (
     <div className={cn("flex items-end gap-2")}>
       <div className="gap-1 grid text-center">

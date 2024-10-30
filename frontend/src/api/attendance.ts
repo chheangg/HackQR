@@ -23,7 +23,7 @@ export const createAttendance = (attendanceDto: Attendance) : Promise<Attendance
 
 export const updateAttendance = (attendanceDto: Attendance) : Promise<Attendance> =>
   request({
-    url: '/attendances',
-    method: 'PATCH',
+    url: '/attendances/' + attendanceDto.date,
+    method: 'PUT',
     data: attendanceDto
   });

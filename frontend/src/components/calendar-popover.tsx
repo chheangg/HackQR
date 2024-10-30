@@ -38,9 +38,6 @@ export function CalendarPopover<T extends FieldValues>({ field }: CalendarPopove
           mode="single"
           selected={field.value}
           onSelect={field.onChange}
-          disabled={(date) =>
-            date < new Date()
-          }
           initialFocus
         />
       </PopoverContent>

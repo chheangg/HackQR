@@ -85,7 +85,7 @@ export function AttendanceForm({ title, onSubmit = console.log, children, attend
               render={({ field }) => (
                 <FormItem className="flex flex-col">
                   <FormLabel className="text-left">Event Starting Time</FormLabel>
-                  <TimePickerPopover date={form.getValues('date')} field={field} />
+                  <TimePickerPopover initDate={form.getValues('date')} field={field} />
                   <FormDescription>
                   Pick the time the event starts
                   </FormDescription>
@@ -99,7 +99,7 @@ export function AttendanceForm({ title, onSubmit = console.log, children, attend
               render={({ field }) => (
                 <FormItem className="flex flex-col">
                   <FormLabel className="text-left">Event Late Time</FormLabel>
-                  <TimePickerPopover date={form.getValues('date')} field={field} />
+                  <TimePickerPopover initDate={form.getValues('date')} field={field} />
                   <FormDescription>
                   Pick the time where users will be considered late after
                   </FormDescription>
@@ -113,7 +113,7 @@ export function AttendanceForm({ title, onSubmit = console.log, children, attend
               render={({ field }) => (
                 <FormItem className="flex flex-col">
                   <FormLabel className="text-left">Event End Time</FormLabel>
-                  <TimePickerPopover date={form.getValues('date')} field={field} />
+                  <TimePickerPopover initDate={form.getValues('date')} field={field} />
                   <FormDescription>
                   Pick the time where the event ends
                   </FormDescription>
