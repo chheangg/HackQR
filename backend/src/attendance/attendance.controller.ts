@@ -15,6 +15,13 @@ export class AttendanceController {
     );
   }
 
+  @Get(':date')
+  async findAllAttendanceByDate(@Param('date') date: string): Promise<AttendanceDto> {
+    return this.attendanceService.convertToAttendanceDto(
+      await this.attendanceService.findDateByDateOrThrowError(date)
+    );
+  }
+
   @Post()
   async createAttendance(
     @Body() attendanceDto: AttendanceDto

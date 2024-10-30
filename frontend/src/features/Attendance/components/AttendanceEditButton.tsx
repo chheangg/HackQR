@@ -35,8 +35,6 @@ export function AttendanceEditButton({ row } : AttendanceEditButtonProps) {
     timeLate: toDate(row.getValue('timeLate')),
     timeEnd: toDate(row.getValue('timeEnd'))
   };
-
-  console.log(attendanceDto, row.getValue('date'));
   
   return (
     <AttendanceForm attendance={attendanceDto} onSubmit={onUpdateAttendance} title="Update Attendance Form">

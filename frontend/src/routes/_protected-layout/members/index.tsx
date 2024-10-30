@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { MemberDataTable } from '../../../features/Member/components/MemberDataTable';
+import { MemberAttendanceDataTable } from '../../../features/Member/components/MemberAttendanceDataTable';
 import { MemberStatus } from '../../../features/Member/types/MemberStatus';
 
 export const Route = createFileRoute('/_protected-layout/members/')({
@@ -7,5 +7,5 @@ export const Route = createFileRoute('/_protected-layout/members/')({
 });
 
 function AbsentPage() {
-  return <MemberDataTable status={MemberStatus.ABSENT} />;
+  return <MemberAttendanceDataTable status={MemberStatus.ABSENT} />;
 }

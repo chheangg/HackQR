@@ -34,9 +34,10 @@ registering members SHOULD and MUST be used.**
 | Method   | URL                                      | Description                              |
 | -------- | ---------------------------------------- | ---------------------------------------- |
 | `GET`    | `/api/attendances`                       | Retrieve all attendances date.           |
-| `POST`   | `/api/attendances/${id}`                 | Create Attendances date.                 |
-| `PATCH`  | `/api/attendances/${id}`                 | Update an attendance date.               |
-| `DELETE` | `/api/attendances/${id}`                 | Delete an attendance date.               |
+| `GET`    | `/api/attendances/${date}`                | Retrieve an attendance date by date string (yyyy-MM-dd)|
+| `POST`   | `/api/attendances/${date}`                 | Create Attendances date.                 |
+| `PATCH`  | `/api/attendances/${date}`                 | Update an attendance date.               |
+| `DELETE` | `/api/attendances/${date}`                 | Delete an attendance date.               |
 
 
 ## Running the app

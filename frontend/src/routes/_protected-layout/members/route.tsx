@@ -1,18 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute, useNavigate, Outlet } from '@tanstack/react-router';
-import dayjs from 'dayjs';
 import { useState } from 'react';
 import { getAllAttendances } from '../../../api/attendance';
 import { MemberTableContext } from '../../../features/Member/contexts/MemberTableContext';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
 import { Tabs, TabsList, TabsTrigger } from '../../../components/ui/tabs';
+import { format } from 'date-fns';
+import { MemberDataTable } from '../../../features/Member/components/MemberDataTable';
 
 export const Route = createFileRoute('/_protected-layout/members')({
   component: () => <MemberLayoutPage />
 });
 
 function MemberLayoutPage() {
-  const [tableOption, setTableOption] = useState<string>('');
+  const [tableOption, setTableOption] = useState<string>(format(Date.now(), 'yyyy-MM-dd'));
   const navigate = useNavigate();
 
   const { data, isLoading, isError } = useQuery({
@@ -32,11 +33,8 @@ function MemberLayoutPage() {
     return 'Empty';
   }
 
-  const todayDate = dayjs().format('YYYY-MM-DD');
-  const isToday = data.find((a) => todayDate === a.date);
-
-  if (isToday && !tableOption) {
-    setTableOption(todayDate);
+  if (tableOption !== 'all' && !data?.find((a) => a.date === tableOption)) {
+    setTableOption('all');
   }
 
   return (
@@ -44,7 +42,7 @@ function MemberLayoutPage() {
       <div className="flex flex-row-reverse gap-2 font-body">
         <Select
           onValueChange={(e) => setTableOption(e)}
-          defaultValue={tableOption}
+          value={tableOption}
         >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Date" />
@@ -59,33 +57,49 @@ function MemberLayoutPage() {
           </SelectContent>
         </Select>
       </div>
-      <Tabs defaultValue="not-yet-arrived" className="mt-2 w-full">
-        <TabsList className="grid grid-cols-3 bg-neutral-200 w-full">
-          <TabsTrigger
-            value="not-yet-arrived"
-            onClick={() => navigate({ to: '/members' })}
-          >
-            Absent
-          </TabsTrigger>
-          <TabsTrigger
-            value="present"
-            onClick={() => navigate({ to: '/members/present' })}
-          >
-            Present
-          </TabsTrigger>
-          <TabsTrigger
-            value="late"
-            onClick={() => navigate({ to: '/members/late' })}
-          >
-            Absent
-          </TabsTrigger>
-        </TabsList>
-        <div className="mt-4">
-          <MemberTableContext.Provider value={{ date: tableOption }}>
-            <Outlet />
-          </MemberTableContext.Provider>
-        </div>
-      </Tabs>
+      {
+        tableOption === 'all'
+          ?
+          (
+            <div className='mt-4'>
+              <MemberDataTable />
+            </div>
+          )
+          :
+          (
+            <Tabs defaultValue="not-yet-arrived" className="mt-2 w-full">
+              <TabsList className="grid grid-cols-3 bg-neutral-200 w-full">
+                <TabsTrigger
+                  value="not-yet-arrived"
+                  onClick={() => navigate({ to: '/members' })}
+                >
+              Absent
+                </TabsTrigger>
+                <TabsTrigger
+                  value="present"
+                  onClick={() => navigate({ to: '/members/present' })}
+                >
+              Present
+                </TabsTrigger>
+                <TabsTrigger
+                  value="late"
+                  onClick={() => navigate({ to: '/members/late' })}
+                >
+              Absent
+                </TabsTrigger>
+              </TabsList>
+              <div className="mt-4">
+                {
+                  <MemberTableContext.Provider value={{ date: tableOption }}>
+                    <Outlet />
+                  </MemberTableContext.Provider>
+                }
+              </div>
+            </Tabs>
+
+          )
+      }
+
     </div>
   );
 }

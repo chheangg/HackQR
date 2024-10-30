@@ -1,20 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
-import { MemberStatus } from "../types/MemberStatus";
 import { getAllMembers } from "../api/member";
-import { useContext } from "react";
-import { MemberTableContext } from "../contexts/MemberTableContext";
-import { columns } from "./columns";
 import { DataTable } from "../../../components/ui/data-table";
+import { memberColumns } from "./memberColumns";
+import { useQuery } from "@tanstack/react-query";
 
-interface MemberDataTableProps {
-  status?: MemberStatus,
-}
 
-export function MemberDataTable({ status }: MemberDataTableProps) {
-  const { date } = useContext(MemberTableContext);
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['members-' + status + '-' + date],
-    queryFn: async () => await getAllMembers({ status, date })
+export function MemberDataTable() {
+  const { isLoading, isError, data } = useQuery({
+    queryKey: ['members'],
+    queryFn: async () => await getAllMembers({}),
+    staleTime: Infinity
   });
 
   if (isError) {
@@ -26,15 +20,10 @@ export function MemberDataTable({ status }: MemberDataTableProps) {
   }
 
   if (!data) {
-    return <DataTable columns={columns} data={[]} />;
+    return <DataTable columns={memberColumns} data={[]} />;
   }
-
-  const formattedData = data?.map((d) => ({
-    ...d,
-    date
-  }));
-
+  
   return (
-    <DataTable columns={columns} data={formattedData} />
+    <DataTable columns={memberColumns} data={data} />
   );
 }

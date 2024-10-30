@@ -8,6 +8,11 @@ export const getAllAttendances = (): Promise<Attendance[]> =>
     method: 'GET'
   });
 
+export const getAttendanceByDate = (date: string): Promise<Attendance> =>
+  request({
+    url: '/attendances/' + date,
+    method: 'GET'
+  });
 
 export const createAttendance = (attendanceDto: Attendance) : Promise<Attendance> =>
   request({

@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-export type MemberTableOptions = {
+export interface MemberTableOptions {
   date: string;
 }
 
