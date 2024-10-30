@@ -7,6 +7,9 @@ import { Form, FormDescription, FormField, FormItem, FormLabel, FormMessage } fr
 import { CalendarPopover } from "../../../components/calendar-popover";
 import { TimePickerPopover } from "../../../components/time-picker-popover";
 import { Button } from "../../../components/ui/button";
+import { Attendance } from "../types/Attendance";
+import { format } from "date-fns";
+import { useState } from "react";
 
 const FormSchema = z.object({
   date: z.date({
@@ -25,19 +28,28 @@ const FormSchema = z.object({
 
 interface AttendanceFormProps {
   children: React.ReactNode;
+  onSubmit?: (data: Attendance) => void;
 }
 
-export function AttendanceForm({ children }: AttendanceFormProps) {
+export function AttendanceForm({ onSubmit = console.log, children }: AttendanceFormProps) {
+  const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema)
   });
 
   function handleSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+    const attendanceDto: Attendance = {
+      date: format(data.date, 'yyyy-MM-dd'),
+      timeStart: data.timeStart,
+      timeLate: data.timeLate,
+      timeEnd: data.timeEnd
+    };
+    onSubmit(attendanceDto);
+    setOpen(false);
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         {children}
       </DialogTrigger>

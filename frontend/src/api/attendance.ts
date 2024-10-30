@@ -7,3 +7,11 @@ export const getAllAttendances = (): Promise<Attendance[]> =>
     url: '/attendances',
     method: 'GET'
   });
+
+
+export const createAttendance = (attendanceDto: Attendance) : Promise<Attendance> =>
+  request({
+    url: '/attendances',
+    method: 'POST',
+    data: attendanceDto
+  });
