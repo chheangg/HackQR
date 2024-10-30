@@ -21,8 +21,6 @@ export function AttendanceDataTable() {
     return <DataTable columns={columns} data={[]} />;
   }
 
-  console.log(data);
-
   return (
     <DataTable columns={columns} data={data} />
   );

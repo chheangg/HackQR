@@ -51,7 +51,7 @@ export function MainLayout({ children }: MainLayoutProps) {
   }
 
   return (
-    <div className="bg-neutral-100 h-screen font-body">
+    <div className="bg-white-50 h-screen font-body">
       <div className={openScanner ? 'block' : 'hidden'}>
         <div className='z-10 absolute inset-0 place-content-center grid bg-gray-500 bg-opacity-50'>
           <div className='flex flex-row-reverse'>
