@@ -85,7 +85,7 @@ function MemberLayoutPage() {
                   value="late"
                   onClick={() => navigate({ to: '/members/late' })}
                 >
-              Absent
+              LATE
                 </TabsTrigger>
               </TabsList>
               <div className="mt-4">
