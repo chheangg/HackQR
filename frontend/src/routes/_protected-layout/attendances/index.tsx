@@ -30,7 +30,7 @@ function AttendancePage() {
   return (
     <div>
       <div className='flex flex-row-reverse mb-4'>
-        <AttendanceForm onSubmit={onCreateAttendance}>
+        <AttendanceForm title="Attendance Date Form" onSubmit={onCreateAttendance}>
           <Button className='bg-green-500 hover:bg-green-600'>Create Attendance Date</Button>
         </AttendanceForm>
       </div>

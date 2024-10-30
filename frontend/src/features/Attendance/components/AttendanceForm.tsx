@@ -29,12 +29,15 @@ const FormSchema = z.object({
 interface AttendanceFormProps {
   children: React.ReactNode;
   onSubmit?: (data: Attendance) => void;
+  title: string;
+  attendance?: z.infer<typeof FormSchema>
 }
 
-export function AttendanceForm({ onSubmit = console.log, children }: AttendanceFormProps) {
+export function AttendanceForm({ title, onSubmit = console.log, children, attendance }: AttendanceFormProps) {
   const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema)
+    resolver: zodResolver(FormSchema),
+    defaultValues: attendance
   });
 
   function handleSubmit(data: z.infer<typeof FormSchema>) {
@@ -55,7 +58,7 @@ export function AttendanceForm({ onSubmit = console.log, children }: AttendanceF
       </DialogTrigger>
       <DialogContent className="font-body">
         <DialogHeader className="font-bold text-lg">
-          <DialogTitle>Attendance Date Form</DialogTitle>
+          <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
         {/* Form fields */}
         <Form {...form}>

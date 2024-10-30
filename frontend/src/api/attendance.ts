@@ -15,3 +15,10 @@ export const createAttendance = (attendanceDto: Attendance) : Promise<Attendance
     method: 'POST',
     data: attendanceDto
   });
+
+export const updateAttendance = (attendanceDto: Attendance) : Promise<Attendance> =>
+  request({
+    url: '/attendances',
+    method: 'PATCH',
+    data: attendanceDto
+  });

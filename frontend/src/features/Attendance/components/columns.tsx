@@ -1,6 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Attendance } from "../types/Attendance";
 import { default as dayjs } from 'dayjs';
+import { AttendanceEditButton } from "./AttendanceEditButton";
 
 function formatDate(date: Date) {
   return dayjs(date).format('MMMM D, YYYY h:mm A');
@@ -25,5 +26,11 @@ export const columns: ColumnDef<Attendance>[] = [
     accessorKey: "timeEnd",
     header: "Time End",
     cell: ({ row }) => formatDate(row.getValue('timeEnd'))
+  },
+  {
+    header: "Edit",
+    cell: ({ row }) => (
+      <AttendanceEditButton row={row} />
+    )
   }
 ];
