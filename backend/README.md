@@ -23,8 +23,7 @@ PORT=
 | -------- | ---------------------------------------- | ---------------------------------------- |
 | `GET`    | `/api/members`                           | Retrieve all members.                    |
 | `GET`    | `/api/members/${id}`                     | Retrieve a specific member with id ${id} |
-| `POST`   | `/api/members/${id}`                     | Populate member with all attendnaces date 
-status  |
+| `POST`   | `/api/members/${id}`                     | Populate member with all attendnaces date status  |
 | `PATCH`  | `/api/members/${id}`                     | Update member.                           |
 | `DELETE` | `/api/members/${id}`                     | Delete member.                           |
 
