@@ -3,9 +3,9 @@ import { MemberDataTable } from '../../../features/Member/components/MemberDataT
 import { MemberStatus } from '../../../features/Member/types/MemberStatus';
 
 export const Route = createFileRoute('/_protected-layout/members/')({
-  component: () => <MemberNotYetArrivedPage />
+  component: () => <AbsentPage />
 });
 
-function MemberNotYetArrivedPage() {
-  return <MemberDataTable status={MemberStatus.NOT_YET_ARRIVED} />;
+function AbsentPage() {
+  return <MemberDataTable status={MemberStatus.ABSENT} />;
 }

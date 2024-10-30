@@ -63,7 +63,7 @@ export class AttendanceService {
     allMembers.docs.forEach(async (doc) => {
       const memberAttendance: MemberAttendance = {
         checkIn: Timestamp.fromDate(new Date(Date.now())),
-        status: MemberStatus.NOT_YET_ARRIVED,
+        status: MemberStatus.ABSENT,
       };
 
       const memberRef = await doc.ref.get();

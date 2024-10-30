@@ -65,7 +65,7 @@ function MemberLayoutPage() {
             value="not-yet-arrived"
             onClick={() => navigate({ to: '/members' })}
           >
-            Not Yet Arrived
+            Absent
           </TabsTrigger>
           <TabsTrigger
             value="present"

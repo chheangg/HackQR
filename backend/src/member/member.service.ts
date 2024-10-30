@@ -56,7 +56,7 @@ export class MemberService {
     const attendances = await this.attendanceService.findAll();
     const memberAttendanceList: MemberAttendance[] = attendances.map((a) => ({
       checkIn: Timestamp.fromDate(new Date(Date.now())),
-      status: MemberStatus.NOT_YET_ARRIVED
+      status: MemberStatus.ABSENT
     }))
 
     const memberAttendance: { [key: string]: MemberAttendance } = 
