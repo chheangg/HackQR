@@ -3,9 +3,7 @@ import { Button } from "../../../components/ui/button";
 import { Card, CardContent, CardHeader } from "../../../components/ui/card";
 import { Member } from "../types/Member";
 import QRCode from 'react-qr-code';
-import { MemberAttendance } from "../types/MemberAttendance";
 import { moveMemberStatus } from "../api/member";
-import { MemberStatus } from "../types/MemberStatus";
 import { default as dayjs } from 'dayjs';
 import { getAllAttendances } from "../../../api/attendance";
 import { useNavigate } from "@tanstack/react-router";
@@ -57,7 +55,7 @@ export function MemberCard({ member }: MemberCardProps) {
       <Card className="w-full font-body">
         <CardHeader className="w-full">
           <p>
-          👋 Hey there, <span className="font-bold">{member.name}</span>
+          👋 Hey there, <span className="font-bold">{member.firstname}</span>
           </p>
         </CardHeader>
         <CardContent>

@@ -10,6 +10,9 @@ below is the .env file configuration
 ```
 # backend_url (with /api suffix)
 VITE_BASE_URL=
+
+# location to your firebase key config (json)
+SA_KEY=
 ```
 
 ## Running the app locally

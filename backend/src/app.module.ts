@@ -3,15 +3,16 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { FirestoreModule } from './firestore/firestore.module';
 import { MemberModule } from './member/member.module';
 import { AttendanceModule } from './attendance/attendance.module';
-import { FirebaseAdminModule } from '@alpha018/nestjs-firebase-auth';
-import { ExtractJwt } from 'passport-jwt';
-import * as fs from 'fs';
+import { AuthModule } from './auth/auth.module';
+import * as admin from 'firebase-admin';
 import * as path from 'path';
+import { FirebaseAdmin } from './firebase-setup';
+
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true
+      isGlobal: true,
     }),
     FirestoreModule.forRoot({
       imports: [ConfigModule],
@@ -20,29 +21,10 @@ import * as path from 'path';
       }),
       inject: [ConfigService],
     }),
-    FirebaseAdminModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        options: JSON.parse(fs
-          .readFileSync(
-            path.join(
-              process.cwd(),
-              configService.get<string>('SA_KEY')
-            )
-          ).toString()
-        ), // Optionally, provide Firebase configuration here
-        auth: {
-          config: {
-            extractor: ExtractJwt.fromAuthHeaderAsBearerToken(), // Extract JWT from the header
-            checkRevoked: true, // Optionally check if the token is revoked
-            validateRole: true, // Enable role validation if needed
-          },
-        },
-      }),
-      inject: [ConfigService],
-    }),
     MemberModule,
     AttendanceModule,
+    AuthModule,
   ],
 })
+
 export class AppModule {}

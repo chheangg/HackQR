@@ -3,10 +3,11 @@ import { MemberService } from "./member.service";
 import { MemberController } from "./member.controller";
 import { AttendanceService } from "src/attendance/attendance.service";
 import { AttendanceModule } from "src/attendance/attendance.module";
+import { FirebaseAdmin } from "src/firebase-setup";
 
 @Module({
   controllers: [MemberController],
-  providers: [MemberService],
+  providers: [MemberService, FirebaseAdmin],
   imports: [AttendanceModule],
 })
 export class MemberModule {}

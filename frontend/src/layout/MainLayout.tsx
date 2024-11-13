@@ -37,13 +37,7 @@ export function MainLayout({ children }: MainLayoutProps) {
     const qrResult = result[0];
     const memberId = qrResult.rawValue;
 
-    const regEx = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-
-    const isUUID = regEx.test(memberId);
-
-    if (!isUUID) {
-      setOpenScanner(false);
-    }
+    console.log(memberId);
 
     setOpenScanner(false);
     

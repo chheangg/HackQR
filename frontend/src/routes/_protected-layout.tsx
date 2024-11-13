@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 import { MainLayout } from '../layout/MainLayout';
 import { TanStackRouterDevtools } from '@tanstack/router-devtools';
+import { RequiredAuth } from '../features/Auth/components/RequiredAuth';
 
 export const Route = createFileRoute('/_protected-layout')({
   component: () => <LayoutPage />
@@ -8,9 +9,11 @@ export const Route = createFileRoute('/_protected-layout')({
 
 function LayoutPage() {
   return (
-    <MainLayout>
-      <Outlet />
-      <TanStackRouterDevtools />
-    </MainLayout>
+    <RequiredAuth>
+      <MainLayout>
+        <Outlet />
+        <TanStackRouterDevtools />
+      </MainLayout>
+    </RequiredAuth>
   );
 }

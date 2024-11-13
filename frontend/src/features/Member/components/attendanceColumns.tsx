@@ -4,12 +4,12 @@ import { MemberStatus } from "./MemberStatus";
 
 export const attendanceColumns: ColumnDef<Member>[] = [
   {
-    accessorKey: 'id',
-    header: 'Member ID'
+    accessorKey: 'email',
+    header: 'Email'
   },
   {
-    accessorKey: 'name',
-    header: 'Name'
+    accessorKey: 'firstname',
+    header: 'First Name'
   },
   {
     header: 'status',

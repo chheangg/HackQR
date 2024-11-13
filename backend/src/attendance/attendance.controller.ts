@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { AttendanceDto } from "./attendance.dto";
 import { AttendanceService } from "./attendance.service";
-import { FirebaseGuard } from "@alpha018/nestjs-firebase-auth";
+import { Auth } from "src/auth/auth.decorator";
 
 @Controller('attendances')
 export class AttendanceController {
@@ -10,6 +10,7 @@ export class AttendanceController {
   ) {}
 
   @Get()
+  @Auth()
   async findAllAttendances(): Promise<AttendanceDto[]> {
     return this.attendanceService.convertToAttendanceDtos(
       await this.attendanceService.findAll()
@@ -17,6 +18,7 @@ export class AttendanceController {
   }
 
   @Get(':date')
+  @Auth()
   async findAllAttendanceByDate(@Param('date') date: string): Promise<AttendanceDto> {
     return this.attendanceService.convertToAttendanceDto(
       await this.attendanceService.findDateByDateOrThrowError(date)
@@ -24,7 +26,7 @@ export class AttendanceController {
   }
 
   @Post()
-  @UseGuards(FirebaseGuard)
+  @Auth()
   async createAttendance(
     @Body() attendanceDto: AttendanceDto
   ): Promise<AttendanceDto> {
@@ -34,7 +36,7 @@ export class AttendanceController {
   }
 
   @Put(":id")
-  @UseGuards(FirebaseGuard)
+  @Auth()
   async updateAttendance(
     @Param('id') id: string,
     @Body() attendanceDto: AttendanceDto
@@ -46,7 +48,7 @@ export class AttendanceController {
   }
 
   @Delete(":id")
-  @UseGuards(FirebaseGuard)
+  @Auth()
   async deleteAttendance(
     @Param('id') id: string,
   ): Promise<AttendanceDto> {

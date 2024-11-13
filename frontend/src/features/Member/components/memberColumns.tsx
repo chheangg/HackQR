@@ -3,11 +3,11 @@ import { Member } from "../types/Member";
 
 export const memberColumns: ColumnDef<Member>[] = [
   {
-    accessorKey: 'id',
-    header: 'Member ID'
+    accessorKey: 'email',
+    header: 'Email'
   },
   {
-    accessorKey: 'name',
-    header: 'Name'
+    accessorKey: 'firstname',
+    header: 'First Name'
   }
 ];
