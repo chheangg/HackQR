@@ -7,7 +7,10 @@ export class MemberDto {
   id: string;
 
   @IsString()
-  name: string;
+  firstname: string;
+
+  @IsString()
+  email: string;
 
   attendances: {
     [date: string]: MemberAttendanceDto

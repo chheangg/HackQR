@@ -78,7 +78,7 @@ export class MemberService {
     const docRef = this.membersCollection.doc(id);
 
     await docRef.update({
-      name: memberDto.name,
+      name: memberDto.firstname,
     })
 
     const memberDoc = await docRef.get();
@@ -169,7 +169,8 @@ export class MemberService {
   convertToMemberDto(member: MemberDocument): MemberDto {
     const memberDto = {
       id: member.id,
-      name: member.name,
+      firstname: member.firstname,
+      email: member.email,
       attendances: {},
     };
 

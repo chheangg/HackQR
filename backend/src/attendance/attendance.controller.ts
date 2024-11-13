@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { AttendanceDto } from "./attendance.dto";
 import { AttendanceService } from "./attendance.service";
+import { FirebaseGuard } from "@alpha018/nestjs-firebase-auth";
 
 @Controller('attendances')
 export class AttendanceController {
@@ -23,6 +24,7 @@ export class AttendanceController {
   }
 
   @Post()
+  @UseGuards(FirebaseGuard)
   async createAttendance(
     @Body() attendanceDto: AttendanceDto
   ): Promise<AttendanceDto> {
@@ -32,6 +34,7 @@ export class AttendanceController {
   }
 
   @Put(":id")
+  @UseGuards(FirebaseGuard)
   async updateAttendance(
     @Param('id') id: string,
     @Body() attendanceDto: AttendanceDto
@@ -43,6 +46,7 @@ export class AttendanceController {
   }
 
   @Delete(":id")
+  @UseGuards(FirebaseGuard)
   async deleteAttendance(
     @Param('id') id: string,
   ): Promise<AttendanceDto> {

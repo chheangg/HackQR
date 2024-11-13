@@ -5,7 +5,8 @@ export class MemberDocument {
   static collectionName = 'logins';
   
   id?: string;
-  name: string;
+  firstname: string;
+  email: string;
   attendances?: {
     [date: string]: MemberAttendance
   }

@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { MemberDocument } from "./member.document";
 import { MemberService } from "./member.service";
 import { MemberDto } from "./member.dto";
 import { MemberStatus } from "./member-status.enum";
+import { FirebaseGuard } from "@alpha018/nestjs-firebase-auth";
 
 @Controller('members')
 export class MemberController {
@@ -11,6 +12,7 @@ export class MemberController {
   ) {}
 
   @Get()
+  @UseGuards(FirebaseGuard)
   async findAllMembers(
     @Query('date') date: string,
     @Query('status') status: MemberStatus | '' | null
@@ -30,6 +32,7 @@ export class MemberController {
   }
 
   @Post(':id')
+  @UseGuards(FirebaseGuard)
   async createMember(
     @Param('id') id: string,
   ): Promise<MemberDto> {
@@ -39,6 +42,7 @@ export class MemberController {
   }
 
   @Put(":id")
+  @UseGuards(FirebaseGuard)
   async updateMember(
     @Param('id') id: string,
     @Body() memberDto: MemberDto
@@ -49,6 +53,7 @@ export class MemberController {
   }
 
   @Put(":id/move-status/:date")
+  @UseGuards(FirebaseGuard)
   async moveMemberStatus(
     @Param('id') id: string,
     @Param('date') date: string,
@@ -59,6 +64,7 @@ export class MemberController {
   }
 
   @Delete(":id")
+  @UseGuards(FirebaseGuard)
   async deleteMember(
     @Param('id') id: string
   ) {
