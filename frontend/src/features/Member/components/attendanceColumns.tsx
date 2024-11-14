@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Member } from "../types/Member";
-import { MemberStatus } from "./MemberStatus";
+import { MemberStatusIndicator } from "./MemberStatusIndicator";
 import { Button } from "../../../components/ui/button";
 import { Copy } from "lucide-react";
 
@@ -24,7 +24,8 @@ export const attendanceColumns: ColumnDef<Member>[] = [
   },
   {
     accessorKey: 'email',
-    header: 'Email'
+    header: 'Email',
+    cell: ({ row }) => <span className="font-semibold">{row.getValue('email')}</span>
   },
   {
     accessorKey: 'firstname',
@@ -33,7 +34,7 @@ export const attendanceColumns: ColumnDef<Member>[] = [
   {
     header: 'status',
     cell: ({ row }) => (
-      <MemberStatus row={row} />
+      <MemberStatusIndicator row={row} />
     )
   },
   {

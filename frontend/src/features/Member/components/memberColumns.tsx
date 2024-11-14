@@ -23,7 +23,8 @@ export const memberColumns: ColumnDef<Member>[] = [
   },
   {
     accessorKey: 'email',
-    header: 'Email'
+    header: 'Email',
+    cell: ({ row }) => <span className="font-semibold">{row.getValue('email')}</span>
   },
   {
     accessorKey: 'firstname',
