@@ -6,6 +6,7 @@ import { MemberStatus } from "../types/MemberStatus";
 interface memberQueryOptions {
   status?: MemberStatus,
   date?: string,
+  q?: string,
 }
 
 export const getAllMembers = (q: memberQueryOptions): Promise<Member[]> => 

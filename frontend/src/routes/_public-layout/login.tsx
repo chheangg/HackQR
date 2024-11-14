@@ -32,7 +32,6 @@ export default function LoginPage() {
       if (userCredential) {
         setUsername('');
         setPassword('');
-                
         navigate({ to: '/attendances' });
       }
     } catch(error) {

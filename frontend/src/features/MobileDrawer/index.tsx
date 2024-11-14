@@ -1,9 +1,10 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from "../../components/ui/drawer";
 import { AsideItemProps } from "../Aside/components/AsideItem";
 import { X } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { useState } from "react";
+import { SignOutUser } from "../../lib/firebase";
 
 export interface MobileDrawerProps {
   children: React.ReactNode;
@@ -12,6 +13,7 @@ export interface MobileDrawerProps {
 
 export function MobileDrawer({ children, navData }: MobileDrawerProps) {
   const [open, setOpen] = useState<boolean>(false);
+  const navigate = useNavigate();
   return (
     <Drawer open={open} onOpenChange={setOpen} direction="right">
       <DrawerTrigger onClick={() => setOpen(true)} asChild>{children}</DrawerTrigger>
@@ -32,6 +34,16 @@ export function MobileDrawer({ children, navData }: MobileDrawerProps) {
                 </Link>
               ))
             }
+            <Button
+              onClick={async () => {
+                await SignOutUser();
+                navigate({ to: '/login' });
+              }} 
+              variant='ghost' 
+              className="mt-12 text-lg text-red-500 hover:text-red-600"
+            >
+          Sign out
+            </Button>
           </div>
         </div>
       </DrawerContent>

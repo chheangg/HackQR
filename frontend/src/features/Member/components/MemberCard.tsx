@@ -116,7 +116,7 @@ export function MemberCard({ member }: MemberCardProps) {
         currentUser ? 'block' : 'hidden'
       ])}>
         <CardHeader>
-          <h2 className="font-bold text-center">🛠️ Officer Actions</h2>
+          <h2 className="font-bold text-center">🛠️ Organizer Actions</h2>
         </CardHeader>
         <CardContent>
           <Button className="bg-green-500 hover:bg-green-600 w-full" onClick={takeAttendance}>Take Attendance</Button>
