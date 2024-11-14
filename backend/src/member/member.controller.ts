@@ -18,10 +18,11 @@ export class MemberController {
   @Auth("ORGANIZER", "ADMIN")
   async findAllMembers(
     @Query('date') date: string,
-    @Query('status') status: MemberStatus | '' | null
+    @Query('status') status: MemberStatus | '' | null,
+    @Query('q') q: string,
   ): Promise<MemberDto[]> {
     return this.memberService.convertToMemberDtos(
-      await this.memberService.findAll({ date, status })
+      await this.memberService.findAll({ date, status, q })
     );
   }
 

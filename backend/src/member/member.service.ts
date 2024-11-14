@@ -12,6 +12,7 @@ import { MemberInvalidCheckinException } from "./member-invalid-checkin.exceptio
 interface MemberQuery {
   date?: string;
   status?: MemberStatus | '' | null;
+  q?: string;
 }
 
 @Injectable()
@@ -22,11 +23,45 @@ export class MemberService {
     private attendanceService: AttendanceService,
   ) {}
 
-  async findAll({ date, status }: MemberQuery): Promise<MemberDocument[]> {
+  async findAll({ date, status, q }: MemberQuery): Promise<MemberDocument[]> {
     let snapshot: FirebaseFirestore.QuerySnapshot<MemberDocument, FirebaseFirestore.DocumentData>;
-    if (date && status) {
+    if (date && status && q) {
       snapshot = await this.membersCollection
       .where('attendances.' + date + '.status', '==', status).get()
+
+      const members: MemberDocument[] = [];
+
+      snapshot.forEach(doc => {
+        const member = doc.data()
+        member.id = doc.id;
+        
+        if (member.firstname) {
+          if(member.attendances[date] && member.attendances[date].status === status && (member.firstname.includes(q) || member.email.includes(q))) {
+            members.push(member)
+          }
+        }
+      });
+  
+      return members; 
+    } else if (date && status) {
+      snapshot = await this.membersCollection
+      .where('attendances.' + date + '.status', '==', status).get()
+    } else if (q) {
+      snapshot = await this.membersCollection.get();
+
+      const members: MemberDocument[] = [];
+
+      snapshot.forEach(doc => {
+        const member = doc.data()
+        member.id = doc.id;
+        if (member.firstname) {
+          if (member.firstname.includes(q) || member.email.includes(q)) {
+            members.push(member)
+          }
+        }
+      });
+
+      return members;
     } else {
       snapshot = await this.membersCollection.get();
     }
