@@ -10,7 +10,7 @@ export class AttendanceController {
   ) {}
 
   @Get()
-  @Auth()
+  @Auth("ORGANIZER", "ADMIN")
   async findAllAttendances(): Promise<AttendanceDto[]> {
     return this.attendanceService.convertToAttendanceDtos(
       await this.attendanceService.findAll()
@@ -18,7 +18,7 @@ export class AttendanceController {
   }
 
   @Get(':date')
-  @Auth()
+  @Auth("ORGANIZER", "ADMIN")
   async findAllAttendanceByDate(@Param('date') date: string): Promise<AttendanceDto> {
     return this.attendanceService.convertToAttendanceDto(
       await this.attendanceService.findDateByDateOrThrowError(date)
@@ -26,7 +26,7 @@ export class AttendanceController {
   }
 
   @Post()
-  @Auth()
+  @Auth("ADMIN")
   async createAttendance(
     @Body() attendanceDto: AttendanceDto
   ): Promise<AttendanceDto> {
@@ -36,7 +36,7 @@ export class AttendanceController {
   }
 
   @Put(":id")
-  @Auth()
+  @Auth("ADMIN")
   async updateAttendance(
     @Param('id') id: string,
     @Body() attendanceDto: AttendanceDto
@@ -48,7 +48,7 @@ export class AttendanceController {
   }
 
   @Delete(":id")
-  @Auth()
+  @Auth("ADMIN")
   async deleteAttendance(
     @Param('id') id: string,
   ): Promise<AttendanceDto> {
