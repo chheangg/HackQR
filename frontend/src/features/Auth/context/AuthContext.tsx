@@ -3,9 +3,6 @@
 import { User } from "firebase/auth";
 import { createContext, useState, useEffect, ReactNode } from "react";
 import { SignOutUser, userStateListener } from "../../../lib/firebase";
-import { useNavigate, useRouter } from "@tanstack/react-router";
-import axios from "axios";
-import { request } from "../../../lib/request";
 
 interface Props {
   children?: ReactNode
