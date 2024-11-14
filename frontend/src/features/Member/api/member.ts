@@ -21,3 +21,9 @@ export const moveMemberStatus = (id: string, date: string): Promise<Member> =>
     url: `/members/${id}/move-status/${date}`,
     method: 'PUT'
   });
+
+export const changeMemberStatus = (id: string, date: string, status: MemberStatus): Promise<Member> =>
+  request({
+    url: `/members/${id}/change-status/${date}?status=${status}`,
+    method: 'PUT'
+  });

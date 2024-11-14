@@ -32,8 +32,6 @@ export default function LoginPage() {
       if (userCredential) {
         setUsername('');
         setPassword('');
-        // Store currentUser in localStorage
-        localStorage.setItem('currentUser', JSON.stringify(userCredential.user));
                 
         navigate({ to: '/attendances' });
       }
