@@ -1,11 +1,11 @@
 const firebaseConfig = {
-  apiKey: "AIzaSyDEOtn341oHcfEvNMBZav0m-qKq1smPcS4",
-  authDomain: "hackqr-demo.firebaseapp.com",
-  projectId: "hackqr-demo",
-  storageBucket: "hackqr-demo.firebasestorage.app",
-  messagingSenderId: "437890904330",
-  appId: "1:437890904330:web:0fd1d86eba116c616e4af3",
-  measurementId: "G-9T8FV8G3Q9"
+  apiKey: "AIzaSyCh21ZCTsRwqfy3dzOZvfjJa6Kn-WW_mVo",
+  authDomain: "hackcc2024-f7d9d.firebaseapp.com",
+  projectId: "hackcc2024-f7d9d",
+  storageBucket: "hackcc2024-f7d9d.firebasestorage.app",
+  messagingSenderId: "151671982406",
+  appId: "1:151671982406:web:9e409a4f5bfe94f4ab3d47",
+  measurementId: "G-RFWT210TT9"
 };
 
 export function getFirebaseConfig() {
