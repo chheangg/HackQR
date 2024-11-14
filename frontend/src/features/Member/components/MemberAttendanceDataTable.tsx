@@ -3,9 +3,10 @@ import { MemberStatus } from "../types/MemberStatus";
 import { getAllMembers } from "../api/member";
 import { useContext } from "react";
 import { MemberTableContext } from "../contexts/MemberTableContext";
-import { attendanceColumns } from "./attendanceColumns";
+import { absentAttendanceColumns } from "./absentAttendanceColumns";
 import { DataTable } from "../../../components/ui/data-table";
 import { getAttendanceByDate } from "../../../api/attendance";
+import { attendanceColumns } from "./attendanceColumns";
 
 interface MemberAttendanceDataTableProps {
   status?: MemberStatus,
@@ -39,6 +40,20 @@ export function MemberAttendanceDataTable({ status }: MemberAttendanceDataTableP
 
   if (isLoadingMember || isLoadingAttendance) {
     return "Loading";
+  }
+
+  if (status === MemberStatus.ABSENT) {
+    if (!member || !attendanceDate) {
+      return <DataTable columns={absentAttendanceColumns} data={[]} />;
+    }
+  
+    const formattedData = member?.filter((d) => {
+      return d.attendances[date].status === status;
+    });
+    
+    return (
+      <DataTable columns={absentAttendanceColumns} data={formattedData} />
+    );
   }
 
   if (!member || !attendanceDate) {

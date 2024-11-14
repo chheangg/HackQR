@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { createFileRoute, useNavigate, Outlet } from '@tanstack/react-router';
+import { createFileRoute, useNavigate, Outlet, useLocation } from '@tanstack/react-router';
 import { useState } from 'react';
 import { getAllAttendances } from '../../../api/attendance';
 import { MemberTableContext } from '../../../features/Member/contexts/MemberTableContext';
@@ -15,6 +15,8 @@ export const Route = createFileRoute('/_protected-layout/members')({
 function MemberLayoutPage() {
   const [tableOption, setTableOption] = useState<string>(format(Date.now(), 'yyyy-MM-dd'));
   const navigate = useNavigate();
+  const location = useLocation();
+  const lastPathname = location.pathname.slice(location.pathname.lastIndexOf("/") , location.pathname.length);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['member-attendance-dates'],
@@ -67,22 +69,22 @@ function MemberLayoutPage() {
           )
           :
           (
-            <Tabs defaultValue="not-yet-arrived" className="mt-2 w-full">
+            <Tabs defaultValue="absent" value={lastPathname} className="mt-2 w-full">
               <TabsList className="grid grid-cols-3 bg-neutral-200 w-full">
                 <TabsTrigger
-                  value="not-yet-arrived"
+                  value="/members"
                   onClick={() => navigate({ to: '/members' })}
                 >
               Absent
                 </TabsTrigger>
                 <TabsTrigger
-                  value="present"
+                  value="/present"
                   onClick={() => navigate({ to: '/members/present' })}
                 >
               Present
                 </TabsTrigger>
                 <TabsTrigger
-                  value="late"
+                  value="/late"
                   onClick={() => navigate({ to: '/members/late' })}
                 >
               LATE

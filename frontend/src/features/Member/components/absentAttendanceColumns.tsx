@@ -3,9 +3,8 @@ import { Member } from "../types/Member";
 import { MemberStatusIndicator } from "./MemberStatusIndicator";
 import { Button } from "../../../components/ui/button";
 import { Copy } from "lucide-react";
-import { MemberCheckin } from "./MemberCheckin";
 
-export const attendanceColumns: ColumnDef<Member>[] = [
+export const absentAttendanceColumns: ColumnDef<Member>[] = [
   {
     accessorKey: 'id',
     header: 'Copy ID',
@@ -31,13 +30,6 @@ export const attendanceColumns: ColumnDef<Member>[] = [
   {
     accessorKey: 'firstname',
     header: 'First Name'
-  },
-  {
-    id: 'check-in',
-    header: 'Check-in Time',
-    cell: ({ row }) => (
-      <MemberCheckin row={row} />
-    )
   },
   {
     header: 'status',

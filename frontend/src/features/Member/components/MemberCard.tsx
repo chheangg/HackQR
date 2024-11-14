@@ -69,19 +69,25 @@ export function MemberCard({ member }: MemberCardProps) {
 
   if (changeMemberStatusMutation.isSuccess) {
     toast('Change status to ' +  attendance?.status);
+    changeMemberStatusMutation.reset();
   }
 
   if (changeMemberStatusMutation.isError) {
     toast('Error changing status: ' + changeMemberStatusMutation.error.message);
+    changeMemberStatusMutation.reset();
   }
 
   if (memberStatusMutation.isSuccess) {
-    setOpen(true);
+    memberStatusMutation.reset();
+    setTimeout(() => setOpen(true));
   }
 
   if (memberStatusMutation.isError) {
-    toast('Error taking attendnaces: ' + memberStatusMutation.error.message);
+    toast('Error taking attendances: ' + memberStatusMutation.error.message);
+    memberStatusMutation.reset();
   }
+
+  console.log(open);
 
   if (isError) {
     return "Error";
@@ -132,7 +138,7 @@ export function MemberCard({ member }: MemberCardProps) {
           </div>
         </CardContent>
       </Card>
-      <AlertDialog open={open && memberStatusMutation.isSuccess && (attendance !== undefined)} >
+      <AlertDialog open={open} >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className="font-body">Attendance Taken!</AlertDialogTitle>

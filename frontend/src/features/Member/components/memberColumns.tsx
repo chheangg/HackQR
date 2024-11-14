@@ -31,10 +31,10 @@ export const memberColumns: ColumnDef<Member>[] = [
     header: 'First Name'
   },
   {
-    accessorKey: 'id',
+    id: 'qr-code-link',
     header: 'QR Code Link',
     cell: ({ row }) => {
-      const id = row.getValue('id');
+      const id = row.original.id;
       return (
         <a 
           className="hover:text-sky-800 underline"
