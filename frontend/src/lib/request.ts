@@ -1,9 +1,8 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 export const client = (() => {
-  console.log(import.meta.env.VITE_BASE_URL);
   const instance = axios.create({
-    baseURL: import.meta.env.VITE_BASE_URL,
+    baseURL: import.meta.env.VITE_BACKEND_API_URL,
     headers: {
       Accept: "application/json, text/plain, */*"
     }
