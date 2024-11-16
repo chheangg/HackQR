@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsString } from "class-validator";
+import { IsArray, IsBoolean, IsNotEmpty, IsString } from "class-validator";
 import { MemberAttendanceDto } from "./member-attendance.dto";
 import { Type } from "class-transformer";
 
@@ -11,6 +11,9 @@ export class MemberDto {
 
   @IsString()
   email: string;
+
+  @IsBoolean()
+  approved: boolean;
 
   attendances: {
     [date: string]: MemberAttendanceDto

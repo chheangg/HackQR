@@ -7,6 +7,7 @@ export class MemberDocument {
   id?: string;
   firstname: string;
   email: string;
+  approved: boolean;
   attendances?: {
     [date: string]: MemberAttendance
   }

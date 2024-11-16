@@ -8,6 +8,7 @@ import { MemberStatus } from "./member-status.enum";
 import { MemberAttendance } from "./member-attendance";
 import { AttendanceDocument } from "src/attendance/attendance.document";
 import { MemberInvalidCheckinException } from "./member-invalid-checkin.exception";
+import { ApplicationDocument } from "./application.document";
 
 interface MemberQuery {
   date?: string;
@@ -20,8 +21,26 @@ export class MemberService {
   constructor(
     @Inject(MemberDocument.collectionName)
     private membersCollection: CollectionReference<MemberDocument>,
+    @Inject(ApplicationDocument.collectionName)
+    private applicationsCollection: CollectionReference<ApplicationDocument>,
     private attendanceService: AttendanceService,
   ) {}
+
+  async findAllApprovedApplications(): Promise<ApplicationDocument[]> {
+    const snapshot: 
+    FirebaseFirestore.QuerySnapshot<ApplicationDocument, FirebaseFirestore.DocumentData>
+    = await this.applicationsCollection.get()
+    
+    const applications: ApplicationDocument[] = [];
+
+    snapshot.forEach(doc => {
+      const application = doc.data()
+      application.id = doc.id;
+      applications.push(application)
+    });
+
+    return applications;
+  }
 
   async findAll({ date, status, q }: MemberQuery): Promise<MemberDocument[]> {
     let snapshot: FirebaseFirestore.QuerySnapshot<MemberDocument, FirebaseFirestore.DocumentData>;
@@ -113,7 +132,7 @@ export class MemberService {
     const docRef = this.membersCollection.doc(id);
 
     await docRef.update({
-      name: memberDto.firstname,
+      approved: memberDto.approved
     })
 
     const memberDoc = await docRef.get();
@@ -188,6 +207,27 @@ export class MemberService {
     });
   }
 
+  async migrateApprovedField(): Promise<MemberDocument[]> {
+    const applications = await this.findAllApprovedApplications();
+    const members = await this.findAll({});
+
+    const applicationMemberMap: { [key: string]: boolean } = {};
+    applications.forEach((a) => {
+      applicationMemberMap[a.id] = a.approved || false;
+    })
+
+    const approvedMembersList = members.map((m) => ({
+      ...m,
+      approved: applicationMemberMap[m.id] || false,
+    }))
+
+    approvedMembersList.forEach(async (m) => {
+      await this.update(m.id, this.convertToMemberDto(m))
+    })
+    
+    return approvedMembersList
+  }
+
   async delete(id: string): Promise<MemberDocument> {
     const docRef = this.membersCollection.doc(id);
 
@@ -206,6 +246,7 @@ export class MemberService {
       id: member.id,
       firstname: member.firstname,
       email: member.email,
+      approved: member.approved,
       attendances: {},
     };
 
