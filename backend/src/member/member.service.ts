@@ -53,6 +53,12 @@ export class MemberService {
       snapshot.forEach(doc => {
         const member = doc.data()
         member.id = doc.id;
+
+        console.log(members)
+
+        if (!member.approved) {
+          return;
+        }
         
         if (member.firstname) {
           if(member.attendances[date] && member.attendances[date].status === status && (member.firstname.includes(q) || member.email.includes(q))) {
@@ -73,6 +79,11 @@ export class MemberService {
       snapshot.forEach(doc => {
         const member = doc.data()
         member.id = doc.id;
+
+        if (!member.approved) {
+          return;
+        }
+
         if (member.firstname) {
           if (member.firstname.includes(q) || member.email.includes(q)) {
             members.push(member)
@@ -84,10 +95,17 @@ export class MemberService {
     } else {
       snapshot = await this.membersCollection.get();
     }
+
+
     const members: MemberDocument[] = [];
 
     snapshot.forEach(doc => {
       const member = doc.data()
+
+      if (!member.approved) {
+        return;
+      }
+
       member.id = doc.id;
       members.push(member)
     });

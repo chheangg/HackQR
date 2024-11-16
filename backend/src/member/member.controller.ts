@@ -48,7 +48,6 @@ export class MemberController {
   @Put('migrate-approved')
   @Auth("ORGANIZER", "ADMIN")
   async migratApprovedMembers(): Promise<MemberDto[]> {
-    console.log('hey')
     return this.memberService.convertToMemberDtos(
       await this.memberService.migrateApprovedField()
     );

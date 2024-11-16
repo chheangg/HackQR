@@ -8,11 +8,8 @@ npm install
 ## Environment Config
 below is the .env file configuration
 ```
-# backend_url (with /api suffix)
-VITE_BASE_URL=
-
-# location to your firebase key config (json)
-SA_KEY=
+# backend api url
+VITE_BACKEND_API_URL=https://dev.twistercambodia.com/api                        
 ```
 
 ## Running the app locally
