@@ -191,20 +191,29 @@ export class MemberService {
     const checkInTimestamp = dayjs(checkIn);
 
     if (checkInTimestamp.isAfter(endTimestamp)) {
+      console.log('ATTEMPTED CHECK-IN MEMBER AFTER: ', member)
+      console.log('CHECK-IN TIME: ', checkInTimestamp)
       throw new MemberInvalidCheckinException(
         `Attempting to check-in member with id (${id}) after the end date of event date ${date}`
       )
     }
 
     if (checkInTimestamp.isAfter(startTimestamp) && checkInTimestamp.isBefore(lateTimestamp)) {
+      console.log('MEMBER IS PRESENT: ', member)
+      console.log('CHECK-IN TIME: ', checkInTimestamp)
       await this.changeStatus(id, member,attendance, MemberStatus.PRESENT);
       return (await docRef.get()).data();
     }
 
     if (checkInTimestamp.isAfter(startTimestamp) && checkInTimestamp.isAfter(lateTimestamp)) {
+      console.log('MEMBER IS LATE: ', member)
+      console.log('CHECK-IN TIME: ', checkInTimestamp)
       await this.changeStatus(id, member, attendance, MemberStatus.LATE);
       return (await docRef.get()).data();
     }
+
+    console.log('ATTEMPTED CHECK-IN MEMBER BEFORE: ', member)
+    console.log('CHECK-IN TIME: ', checkInTimestamp)
 
     throw new MemberInvalidCheckinException(
       `Attempting to check-in member with id (${id}) before the start date of event date ${date}`
