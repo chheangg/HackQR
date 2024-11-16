@@ -9,9 +9,9 @@
     }
   ],
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": ".", // Root of your project
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"] // Alias "@" to the src folder
     }
   }
 }
