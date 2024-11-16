@@ -118,6 +118,11 @@ export class MemberService {
     const memberDoc = await docRef.get();
 
     const member = memberDoc.data();
+
+    if (!member.approved) {
+      return;
+    }
+
     member.id = memberDoc.id;
     
     return member;
